@@ -1,0 +1,15 @@
+/* datatables 每页xx条 */
+.dataTables_wrapper .dataTables_length {
+	padding-top: 0.755em;
+	padding-left: 1em;
+}
+
+/* datatables 每页xx条 */
+.dataTables_wrapper .dataTables_length label {
+	font-weight: normal;
+}
+
+/* datatables hover 变色 */
+table>tbody>tr:hover>td, table>tbody>tr:hover>th {
+	background-color: rgba(204, 255, 255, 0.5);
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.neusoft.chm.modules.bed.dao.BedDao">
+	<resultMap type="com.hwj.modules.keys.model.KeysModel" id="KeysModelMap">
+		<result property="key" column="KEY" jdbcType="VARCHAR" />
+		<result property="desc" column="DESCRIPTION" jdbcType="VARCHAR" />
+		<result property="rawDesc" column="RAW_DESC" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="search" resultMap="KeysModelMap">
+		select key,raw_desc,descirption from keys
+		<where>
+		</where>
+	</select>
+
+</mapper>
