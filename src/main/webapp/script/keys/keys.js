@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
 	var manage = {
 		getQueryCondition : function(data) {
 			var param = {};
@@ -24,7 +25,7 @@ $(document).ready(function() {
 		}
 	};
 
-	// 配置datatable
+	// 获取datatable数据
 	var $table = $('#tp');
 	var _table = $table.dataTable($.extend(true, DATATABLES_DEFAULT_OPTIONS, {
 		ajax : function(data, callback, settings) {
@@ -64,41 +65,8 @@ $(document).ready(function() {
 		} ]
 	})).api();
 
-	$('#saveRows').on('click', function() {
-		var trs = [];
-		$('#tb tbody tr').each(function() {
-			trs.push(this.outerHTML);
-		});
-
-		doSave(trs, "application/json", "my.json");
-	});
-
-	// 添加行模态框显示时
-	/*$('#addRowModal').on('show.bs.modal', function() {
-	    // 清空表单数据
-	    $('#addRowForm')[0].reset();
-	    // 清空按键数组
-	    keys = [];
-	    addKeyMode = false;
-	    multiMode = true;
-	}).on('shown.bs.modal', function() {
-	    // 聚焦在第一个输入框内
-	    $('#keyBind').focus();
-
-	});*/
-
-	// 点击Save按钮
+	// 添加
 	$('#saveRow').on('click', function() {
-		//		if (!($('#keyBind').val() && $('#keyEffect').val())) {
-		//			return false;
-		//		}
-		//		// 添加行
-		//		var $tr = $('<tr></tr>');
-		//		var $keyTd = $('<td></td>').text($('#keyBind').val());
-		//		var $effectTd = $('<td></td>').text($('#keyEffect').val());
-		//		$tr.append($keyTd).append($effectTd);
-		//
-		//		$('#tb').append($tr);
 
 		var entity = {};
 		entity.key = $('#key').val();
@@ -118,6 +86,10 @@ $(document).ready(function() {
 				if (result.status == "S") {
 					_table.draw();
 					toastr['success'](result.message);
+
+					// 清空表单内容
+					$('#keyForm')[0].reset();
+					$('#key').focus();
 				} else {
 					toastr['error'](result.message);
 				}
@@ -184,6 +156,7 @@ $(document).ready(function() {
 		return false;
 	});
 
+	// 默认为多键模式
 	$('#multiKeyModeBtn').addClass('active');
 
 	var multiMode = true;
@@ -210,11 +183,12 @@ $(document).ready(function() {
 
 	}
 
+	// 加级模式
 	var addKeyMode = false;
 
 	// 绑定加级按钮
 	$('#addKeyBtn').on('click', function() {
-		$('#keyBind').focus();
+		$('#key').focus();
 
 		if (!keys.length) {
 			return false;
@@ -239,10 +213,10 @@ $(document).ready(function() {
 	 * 清除绑定键输入框中的内容
 	 */
 	function clearKeyInput() {
-		$('#keyBind').val('');
+		$('#key').val('');
 		keys = [];
 
-		$('#keyBind').focus();
+		$('#key').focus();
 	}
 
 	/**
@@ -267,37 +241,49 @@ $(document).ready(function() {
 	}
 
 	/**
-	 * 保存文件
+	 * 清空表
 	 */
-	function doSave(value, type, name) {
-		var blob;
-		if (typeof window.Blob == "function") {
-			blob = new Blob([ value ], {
-				type : type
-			});
-		} else {
-			var BlobBuilder = window.BlobBuilder || window.MozBlobBuilder || window.WebKitBlobBuilder || window.MSBlobBuilder;
-			var bb = new BlobBuilder();
-			bb.append(value);
-			blob = bb.getBlob(type);
-		}
-		var URL = window.URL || window.webkitURL;
-		var bloburl = URL.createObjectURL(blob);
-		var anchor = document.createElement("a");
-		if ('download' in anchor) {
-			anchor.style.visibility = "hidden";
-			anchor.href = bloburl;
-			anchor.download = name;
-			document.body.appendChild(anchor);
-			var evt = document.createEvent("MouseEvents");
-			evt.initEvent("click", true, true);
-			anchor.dispatchEvent(evt);
-			document.body.removeChild(anchor);
-		} else if (navigator.msSaveBlob) {
-			navigator.msSaveBlob(blob, name);
-		} else {
-			location.href = bloburl;
-		}
-	}
+	$('#clearTable').on('click', function() {
+		$.confirm({
+			title : 'Confirm!',
+			content : '确定要清空表吗？',
+			buttons : {
+				confirm : {
+					text : '确定',
+					btnClass : 'btn-danger',
+					action : function() {
+						$.ajax({
+							type : "POST",
+							url : _path + "/keys/clearTable",
+							cache : false, //禁用缓存
+							// data : param, //传入已封装的参数
+							contentType : 'application/json;charset=utf-8',
+							dataType : "json",
+							success : function(result) {
+								if (result.status == "S") {
+									_table.draw();
+									toastr['success'](result.message);
 
+									// 清空表单内容
+									$('#keyForm')[0].reset();
+									$('#key').focus();
+								} else {
+									toastr['error'](result.message);
+								}
+							},
+							error : function(XMLHttpRequest, textStatus, errorThrown) {
+								toastr['error']('发生错误');
+							}
+						});
+					}
+				},
+				cancel : {
+					text : '取消',
+					btnClass : 'btn-default',
+					action : function() {
+					}
+				}
+			}
+		});
+	});
 });

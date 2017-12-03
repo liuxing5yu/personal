@@ -3,8 +3,6 @@
  */
 package com.hwj.modules.keys.web;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -62,7 +60,7 @@ public class KeysController {
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public ResponseEntity<ResultEntity> add(HttpServletRequest request, @RequestBody KeysModel model) {
+	public ResponseEntity<ResultEntity> add(@RequestBody KeysModel model) {
 		ResultEntity result = null;
 		try {
 			service.addOne(model);
@@ -75,4 +73,17 @@ public class KeysController {
 		return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/clearTable", method = RequestMethod.POST)
+	public ResponseEntity<ResultEntity> clearTable() {
+		ResultEntity result = null;
+		try {
+			service.clearTable();
+			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "清表成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, e.getMessage());
+		}
+		HttpHeaders headers = new HttpHeaders();
+		return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
+	}
 }

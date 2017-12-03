@@ -24,4 +24,6 @@ public interface KeysDao {
 
 	void addOne(Map<String, Object> map);
 
+	void clearTable();
+
 }

@@ -33,3 +33,11 @@ var DATATABLES_DEFAULT_OPTIONS = {
 	serverSide : true, //启用服务器端分页
 	ordering : false
 };
+
+/**
+ * Toastr
+ */
+toastr.options = {
+	"debug" : true,
+	"preventDuplicates" : true
+}

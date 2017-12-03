@@ -16,7 +16,7 @@
 		</div>
 		<div class="panel panel-default">
 			<div class="panel-body">
-				<form id="keyForm">
+				<form id="keyForm" class="form">
 					<div class="row">
 						<div class="col-md-4">
 							<div class="input-group">
@@ -42,6 +42,7 @@
 						</div>
 					</div>
 				</form>
+
 				<div class="row">
 					<div class="col-md-2">
 						<div class="btn-group">
@@ -64,18 +65,20 @@
 
 		<div class="panel panel-default">
 			<div class="panel-body">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="btn-group">
-							<button id="addRow" type="button" class="btn btn-default">添加行</button>
-							<button id="saveRows" type="button" class="btn btn-default">保存</button>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">操作</h3>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-1">
+								<div class="btn-group">
+									<button id="clearTable" type="button" class="btn btn-success" title="清空数据">清空表</button>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-		<div class="panel panel-default">
-			<div class="panel-body">
 				<div class="row">
 					<div class="col-md-12">
 						<table id="tp" class="table table-striped table-bordered table-condensed">
@@ -86,8 +89,6 @@
 									<th>描述</th>
 								</tr>
 							</thead>
-							<tbody>
-							</tbody>
 						</table>
 					</div>
 				</div>

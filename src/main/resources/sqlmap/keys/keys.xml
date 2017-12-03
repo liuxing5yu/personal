@@ -23,4 +23,9 @@
 		values
 		(#{key},#{rawDesc},#{desc},sysdate,sysdate)
 	</insert>
+
+	<delete id="clearTable">
+		delete from keys
+	</delete>
+
 </mapper>

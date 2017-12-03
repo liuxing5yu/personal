@@ -47,4 +47,12 @@ public class KeysService {
 		dao.addOne(map);
 	}
 
+	/**
+	 * 
+	 *
+	 */
+	public void clearTable() {
+		dao.clearTable();
+	}
+
 }
