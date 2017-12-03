@@ -5,7 +5,7 @@
 <html>
 <head>
 <title>快捷键</title>
-<script type="text/javascript" src="${path }/script/keys.js"></script>
+<script type="text/javascript" src="${path }/script/keys/keys.js"></script>
 
 </head>
 <body>
@@ -16,19 +16,33 @@
 		</div>
 		<div class="panel panel-default">
 			<div class="panel-body">
+				<form id="keyForm">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="input-group">
+								<span class="input-group-addon">快捷键</span>
+								<input type="text" class="form-control input-md" readonly id="key" name="key" />
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="input-group">
+								<span class="input-group-addon">官方描述</span>
+								<textarea class="form-control input-md" id="rawDesc" name="rawDesc"></textarea>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="input-group">
+								<span class="input-group-addon">描述</span>
+								<textarea class="form-control input-md" id="desc" name="desc"></textarea>
+							</div>
+						</div>
+					</div>
+				</form>
 				<div class="row">
-					<div class="col-md-4">
-						<div class="input-group">
-							<span class="input-group-addon">快捷键</span>
-							<input type="text" class="form-control input-md" readonly id="keyBind" name="keyBind" />
-						</div>
-					</div>
-					<div class="col-md-5">
-						<div class="input-group">
-							<span class="input-group-addon">描述</span>
-							<input type="text" class="form-control input-md" id="keyEffect" name="keyEffect" />
-						</div>
-					</div>
 					<div class="col-md-2">
 						<div class="btn-group">
 							<button id="singleKeyModeBtn" type="button" class="btn btn-default" title="单键模式">单</button>
@@ -37,6 +51,8 @@
 							<button id="clearInputBtn" type="button" class="btn btn-default" title="清空内容">清</button>
 						</div>
 					</div>
+				</div>
+				<div class="row">
 					<div class="col-md-1">
 						<div class="btn-group">
 							<button id="saveRow" type="button" class="btn btn-success" title="保存">保存</button>
@@ -45,6 +61,7 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<div class="row">
@@ -65,6 +82,7 @@
 							<thead>
 								<tr>
 									<th>快捷键</th>
+									<th>官方描述</th>
 									<th>描述</th>
 								</tr>
 							</thead>
@@ -87,6 +105,5 @@
 			</div>
 		</div>
 	</div>
-
 </body>
 </html>

@@ -4,7 +4,6 @@
 package com.hwj.modules.keys.web;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
@@ -39,14 +39,13 @@ public class KeysController {
 
 	@RequestMapping("/view")
 	public ModelAndView view() {
-		ModelAndView mv = new ModelAndView("/keys");
+		ModelAndView mv = new ModelAndView("/keys/keys");
 
 		return mv;
 	}
 
-	@RequestMapping("/search")
-	public ResponseEntity<ResultEntity> search(final HttpServletRequest request, final HttpServletResponse response,
-			@RequestBody KeysParam param) {
+	@RequestMapping(value = "/search", method = RequestMethod.POST)
+	public ResponseEntity<ResultEntity> search(@RequestBody KeysParam param) {
 		ResultEntity result = null;
 		try {
 			PageList<KeysModel> list = service.search(param);
@@ -56,9 +55,24 @@ public class KeysController {
 			result.addObject("recordsFiltered", list.getPaginator().getTotalCount());
 		} catch (Exception e) {
 			e.printStackTrace();
-			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "联系管理员");
+			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, e.getMessage());
 		}
 		HttpHeaders headers = new HttpHeaders();
 		return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
 	}
+
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	public ResponseEntity<ResultEntity> add(HttpServletRequest request, @RequestBody KeysModel model) {
+		ResultEntity result = null;
+		try {
+			service.addOne(model);
+			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "添加成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, e.getMessage());
+		}
+		HttpHeaders headers = new HttpHeaders();
+		return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
+	}
+
 }

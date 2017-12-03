@@ -13,7 +13,11 @@ package com.hwj.modules.keys.model;
 public class KeysModel {
 	private String key;
 	private String desc;
-	private String rowDesc;
+	private String rawDesc;
+
+	public KeysModel() {
+		super();
+	}
 
 	public String getKey() {
 		return key;
@@ -31,11 +35,11 @@ public class KeysModel {
 		this.desc = desc;
 	}
 
-	public String getRowDesc() {
-		return rowDesc;
+	public String getRawDesc() {
+		return rawDesc;
 	}
 
-	public void setRowDesc(String rowDesc) {
-		this.rowDesc = rowDesc;
+	public void setRawDesc(String rowDesc) {
+		this.rawDesc = rowDesc;
 	}
 }

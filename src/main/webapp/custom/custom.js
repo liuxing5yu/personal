@@ -30,5 +30,6 @@ var DATATABLES_DEFAULT_OPTIONS = {
 	dom : 'rt<"bottom"iflp<"clear">>',
 	stateSave : true,
 	searching : false, // 禁用原生搜索
+	serverSide : true, //启用服务器端分页
 	ordering : false
 };

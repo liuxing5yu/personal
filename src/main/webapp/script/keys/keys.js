@@ -29,7 +29,7 @@ $(document).ready(function() {
 	var _table = $table.dataTable($.extend(true, DATATABLES_DEFAULT_OPTIONS, {
 		ajax : function(data, callback, settings) {
 			var param = JSON.stringify(manage.getQueryCondition(data));
-
+			console.log(param);
 			$.ajax({
 				type : "POST",
 				url : _path + "/keys/search",
@@ -51,12 +51,11 @@ $(document).ready(function() {
 
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					toastr['error']('查询数据失败');
+					toastr['error']('发生错误');
 				}
 			});
 		},
 		columns : [ {
-			className : "ellipsis", //文字过长时用省略号显示，CSS实现
 			data : "key",
 		}, {
 			data : "rawDesc",
@@ -90,16 +89,43 @@ $(document).ready(function() {
 
 	// 点击Save按钮
 	$('#saveRow').on('click', function() {
-		if (!($('#keyBind').val() && $('#keyEffect').val())) {
-			return false;
-		}
-		// 添加行
-		var $tr = $('<tr></tr>');
-		var $keyTd = $('<td></td>').text($('#keyBind').val());
-		var $effectTd = $('<td></td>').text($('#keyEffect').val());
-		$tr.append($keyTd).append($effectTd);
+		//		if (!($('#keyBind').val() && $('#keyEffect').val())) {
+		//			return false;
+		//		}
+		//		// 添加行
+		//		var $tr = $('<tr></tr>');
+		//		var $keyTd = $('<td></td>').text($('#keyBind').val());
+		//		var $effectTd = $('<td></td>').text($('#keyEffect').val());
+		//		$tr.append($keyTd).append($effectTd);
+		//
+		//		$('#tb').append($tr);
 
-		$('#tb').append($tr);
+		var entity = {};
+		entity.key = $('#key').val();
+		entity.rawDesc = $('#rawDesc').val();
+		entity.desc = $('#desc').val();
+
+		var param = JSON.stringify(entity);
+
+		$.ajax({
+			type : "POST",
+			url : _path + "/keys/add",
+			cache : false, //禁用缓存
+			data : param, //传入已封装的参数
+			contentType : 'application/json;charset=utf-8',
+			dataType : "json",
+			success : function(result) {
+				if (result.status == "S") {
+					_table.draw();
+					toastr['success'](result.message);
+				} else {
+					toastr['error'](result.message);
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				toastr['error']('发生错误');
+			}
+		});
 	});
 
 	// 映射键值和对应显示的值: keyCode/*key*/: showValue
@@ -120,7 +146,7 @@ $(document).ready(function() {
 	var keys = [];
 
 	// 在快捷键输入框按下键时，显示在输入框中
-	$('#keyBind').keydown(function() {
+	$('#key').keydown(function() {
 		$(this).val('');
 
 		if (multiMode) {
