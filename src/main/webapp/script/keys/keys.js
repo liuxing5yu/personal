@@ -28,25 +28,25 @@ $(document).ready(function() {
 	// 获取datatable数据
 	var $table = $('#tp');
 	var _table = $table.dataTable($.extend(true, DATATABLES_DEFAULT_OPTIONS, {
+
 		ajax : function(data, callback, settings) {
 			var param = JSON.stringify(manage.getQueryCondition(data));
-			console.log(param);
 			$.ajax({
 				type : "POST",
 				url : _path + "/keys/search",
-				cache : false, //禁用缓存
-				data : param, //传入已封装的参数
+				cache : false, // 禁用缓存
+				data : param, // 传入已封装的参数
 				contentType : 'application/json;charset=utf-8',
 				dataType : "json",
 				success : function(result) {
 					if (result.status == "S") {
 						var returnData = {};
-						returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
+						returnData.draw = data.draw;// 这里直接自行返回了draw计数器,应该由后台返回
 						returnData.recordsTotal = result.recordsTotal;
-						returnData.recordsFiltered = result.recordsFiltered;//后台不实现过滤功能，每次查询均视作全部结果
+						returnData.recordsFiltered = result.recordsFiltered;// 后台不实现过滤功能，每次查询均视作全部结果
 						returnData.data = result.data;
-						//调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
-						//此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+						// 调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+						// 此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
 						callback(returnData);
 					}
 
@@ -57,17 +57,36 @@ $(document).ready(function() {
 			});
 		},
 		columns : [ {
+			data : null,
+			title : "序号"
+		}, {
 			data : "key",
+			title : "快捷键",
 		}, {
 			data : "rawDesc",
+			title : "官方描述",
 		}, {
 			data : "desc",
-		} ]
+			title : "描述",
+		}, {
+			"data" : null,
+			"title" : "操作",
+			"defaultContent" : "<button class='edit-btn btn btn-primary' type='button'>编辑</button><button class='delete-btn btn btn-danger' type='button'>删除</button>"
+		} ],
+
+		// 自增长序号
+		fnDrawCallback : function() {
+			var api = this.api();
+			var startIndex = api.context[0]._iDisplayStart;// 获取到本页开始的条数
+			api.column(0).nodes().each(function(cell, i) {
+				cell.innerHTML = startIndex + i + 1;
+			});
+		}
+
 	})).api();
 
 	// 添加
 	$('#saveRow').on('click', function() {
-
 		var entity = {};
 		entity.key = $('#key').val();
 		entity.rawDesc = $('#rawDesc').val();
@@ -78,8 +97,8 @@ $(document).ready(function() {
 		$.ajax({
 			type : "POST",
 			url : _path + "/keys/add",
-			cache : false, //禁用缓存
-			data : param, //传入已封装的参数
+			cache : false, // 禁用缓存
+			data : param, // 传入已封装的参数
 			contentType : 'application/json;charset=utf-8',
 			dataType : "json",
 			success : function(result) {
@@ -100,16 +119,87 @@ $(document).ready(function() {
 		});
 	});
 
+	// 行内修改
+	$("#tp tbody").on("click", ".edit-btn", function() {
+		var tds = $(this).parents("tr").children();
+		$.each(tds, function(i, val) {
+			var jqob = $(val);
+			if (i < 1 || jqob.has('button').length) {
+				return true;
+			}// 跳过第1项 序号,按钮
+			var txt = jqob.text();
+			var put = $("<input type='text'>");
+			put.val(txt);
+			jqob.html(put);
+		});
+		$(this).html("保存");
+		$(this).toggleClass("edit-btn");
+		$(this).toggleClass("save-btn");
+	});
+
+	// 行内保存
+	$("#tp tbody").on("click", ".save-btn", function() {
+		var row = _table.row($(this).parents("tr"));
+		var tds = $(this).parents("tr").children();
+		$.each(tds, function(i, val) {
+			var jqob = $(val);
+			// 把input变为字符串
+			if (!jqob.has('button').length) {
+				var txt = jqob.children("input").val();
+				jqob.html(txt);
+				_table.cell(jqob).data(txt);// 修改DataTables对象的数据
+			}
+		});
+
+		var param = JSON.stringify(row.data());
+
+		$.ajax({
+			type : "POST",
+			url : _path + "/keys/edit",
+			cache : false, // 禁用缓存
+			data : param, // 传入已封装的参数
+			contentType : 'application/json;charset=utf-8',
+			dataType : "json",
+			success : function(result) {
+				if (result.status == "S") {
+					_table.draw();
+					toastr['success'](result.message);
+
+					// 清空表单内容
+					$('#keyForm')[0].reset();
+					$('#key').focus();
+				} else {
+					toastr['error'](result.message);
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				toastr['error']('发生错误');
+			}
+		});
+
+		$(this).html("编辑");
+		$(this).toggleClass("edit-btn");
+		$(this).toggleClass("save-btn");
+	});
+
+	// 批量点击编辑按钮
+	$("#batch-edit-btn").click(function() {
+		$(".edit-btn").click();
+	});
+	$("#batch-save-btn").click(function() {
+		$(".save-btn").click();
+	});
+
 	// 映射键值和对应显示的值: keyCode/*key*/: showValue
 	var keyCode2value = {
-		17 /*Control*/: 'Ctrl',
-		27 /*Escape*/: 'Esc',
+		17 /* Control */: 'Ctrl',
+		27 /* Escape */: 'Esc',
 		32 /* */: 'Space',
-		38 /*ArrowUp*/: 'Up',
-		40 /*ArrowDown*/: 'Down',
-		37 /*ArrowLeft*/: 'Left',
-		39 /*ArrowRight*/: 'Right',
-		107 /*+*/: 'Numpad_Add',
+		38 /* ArrowUp */: 'Up',
+		40 /* ArrowDown */: 'Down',
+		37 /* ArrowLeft */: 'Left',
+		39 /* ArrowRight */: 'Right',
+		107 /* + */: 'Numpad_Add',
 		109 /*-*/: 'Numpad_Subtract',
 		106 /*-*/: 'Numpad_Multiply',
 		111 /*-*/: 'Numpad_Divide',
@@ -255,7 +345,7 @@ $(document).ready(function() {
 						$.ajax({
 							type : "POST",
 							url : _path + "/keys/clearTable",
-							cache : false, //禁用缓存
+							cache : false, // 禁用缓存
 							// data : param, //传入已封装的参数
 							contentType : 'application/json;charset=utf-8',
 							dataType : "json",

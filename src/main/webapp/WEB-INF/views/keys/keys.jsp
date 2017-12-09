@@ -7,6 +7,12 @@
 <title>快捷键</title>
 <script type="text/javascript" src="${path }/script/keys/keys.js"></script>
 
+<style type="text/css">
+table.dataTable tbody tr.selected input {
+	color: black;
+}
+</style>
+
 </head>
 <body>
 	<div class="container">
@@ -72,9 +78,11 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-md-1">
-								<div class="btn-group">
-									<button id="clearTable" type="button" class="btn btn-success" title="清空数据">清空表</button>
-								</div>
+								<button id="clearTable" type="button" class="btn btn-primary" title="清空表">清空表</button>
+							</div>
+							<div class="col-md-3 btn-group">
+								<button type="button" id="batch-edit-btn" class="btn btn-primary">批量编辑</button>
+								<button type="button" id="batch-save-btn" class="btn btn-success">批量保存</button>
 							</div>
 						</div>
 					</div>
@@ -84,9 +92,11 @@
 						<table id="tp" class="table table-striped table-bordered table-condensed">
 							<thead>
 								<tr>
+									<th>序号</th>
 									<th>快捷键</th>
 									<th>官方描述</th>
 									<th>描述</th>
+									<th>操作</th>
 								</tr>
 							</thead>
 						</table>
@@ -96,12 +106,25 @@
 		</div>
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h2>已知问题</h2>
+				<h2>ToDo List</h2>
 			</div>
 			<div class="panel-body">
+
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">操作</h3>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-3 btn-group">123</div>
+						</div>
+					</div>
+				</div>
+
 				<ul class="list-group">
-					<li class="list-group-item">在作用描述中如果带 <>，导出时会自动转义</li>
-					<li class="list-group-item">多键模式下，一些组合键会引发浏览器的行为，不能被正确捕捉，例如Ctrl+N</li>
+					<c:forEach var="item" items="${todos }">
+						<li class="list-group-item">${item.content }</li>
+					</c:forEach>
 				</ul>
 			</div>
 		</div>

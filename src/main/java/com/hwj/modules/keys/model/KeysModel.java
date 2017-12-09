@@ -11,6 +11,7 @@ package com.hwj.modules.keys.model;
  *
  */
 public class KeysModel {
+	private String id;
 	private String key;
 	private String desc;
 	private String rawDesc;
@@ -41,5 +42,13 @@ public class KeysModel {
 
 	public void setRawDesc(String rowDesc) {
 		this.rawDesc = rowDesc;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }

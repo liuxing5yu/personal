@@ -14,7 +14,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.hwj.modules.base.util.MapUtil;
 import com.hwj.modules.keys.dao.KeysDao;
 import com.hwj.modules.keys.model.KeysModel;
-import com.hwj.modules.keys.model.param.KeysParam;
+import com.hwj.modules.keys.model.param.KeysParamModel;
 
 /**
  * 
@@ -29,18 +29,13 @@ public class KeysService {
 	@Autowired
 	private KeysDao dao;
 
-	public PageList<KeysModel> search(KeysParam param) {
+	public PageList<KeysModel> search(KeysParamModel param) {
 		PageBounds pageBounds = new PageBounds(param.getPageNow() + 1, param.getPageSize());
 		Map<String, Object> map = new HashMap<>();
 		MapUtil.object2Map(map, param);
 		return dao.search(map, pageBounds);
 	}
 
-	/**
-	 * 
-	 *
-	 * @param model
-	 */
 	public void addOne(KeysModel model) {
 		Map<String, Object> map = new HashMap<>();
 		MapUtil.object2Map(map, model);
@@ -53,6 +48,12 @@ public class KeysService {
 	 */
 	public void clearTable() {
 		dao.clearTable();
+	}
+
+	public void edit(KeysModel model) {
+		Map<String, Object> map = new HashMap<>();
+		MapUtil.object2Map(map, model);
+		dao.edit(map);
 	}
 
 }

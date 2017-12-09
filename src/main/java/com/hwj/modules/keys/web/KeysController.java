@@ -3,6 +3,8 @@
  */
 package com.hwj.modules.keys.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,8 +19,10 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.hwj.modules.base.entity.ResultEntity;
 import com.hwj.modules.base.entity.ResultEntityHashMapImpl;
 import com.hwj.modules.keys.model.KeysModel;
-import com.hwj.modules.keys.model.param.KeysParam;
+import com.hwj.modules.keys.model.param.KeysParamModel;
 import com.hwj.modules.keys.service.KeysService;
+import com.hwj.modules.todo.model.TodoModel;
+import com.hwj.modules.todo.service.TodoService;
 
 /**
  * 
@@ -35,15 +39,21 @@ public class KeysController {
 	@Autowired
 	private KeysService service;
 
+	@Autowired
+	private TodoService todoService;
+
 	@RequestMapping("/view")
 	public ModelAndView view() {
 		ModelAndView mv = new ModelAndView("/keys/keys");
 
+		List<TodoModel> todoList = todoService.search(null);
+
+		mv.addObject("todos", todoList);
 		return mv;
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
-	public ResponseEntity<ResultEntity> search(@RequestBody KeysParam param) {
+	public ResponseEntity<ResultEntity> search(@RequestBody KeysParamModel param) {
 		ResultEntity result = null;
 		try {
 			PageList<KeysModel> list = service.search(param);
@@ -65,6 +75,20 @@ public class KeysController {
 		try {
 			service.addOne(model);
 			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "添加成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, e.getMessage());
+		}
+		HttpHeaders headers = new HttpHeaders();
+		return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST)
+	public ResponseEntity<ResultEntity> edit(@RequestBody KeysModel model) {
+		ResultEntity result = null;
+		try {
+			service.edit(model);
+			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "修改成功");
 		} catch (Exception e) {
 			e.printStackTrace();
 			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, e.getMessage());

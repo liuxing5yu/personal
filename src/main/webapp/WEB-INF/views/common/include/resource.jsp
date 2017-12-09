@@ -11,6 +11,11 @@
 <link rel="stylesheet" href="${path}/resource/datatables/1.10.15/media/css/jquery.dataTables.css" />
 <script type="text/javascript" src="${path}/resource/datatables/1.10.15/media/js/jquery.dataTables.js"></script>
 
+<%-- Datatable Extension Select --%>
+<link rel="stylesheet" href="${path}/resource/datatables/1.10.15/extensions/Select/css/select.bootstrap.css" />
+<script type="text/javascript" src="${path}/resource/datatables/1.10.15/extensions/Select/js/dataTables.select.js"></script>
+
+
 <%-- Font-awesome --%>
 <link href="${path}/resource/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
 

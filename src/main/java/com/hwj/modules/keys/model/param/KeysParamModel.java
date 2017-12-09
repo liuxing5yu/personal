@@ -12,7 +12,7 @@ import com.hwj.modules.base.entity.PaginationParam;
  * @date 2017年12月2日 下午4:12:22 
  *
  */
-public class KeysParam extends PaginationParam {
+public class KeysParamModel extends PaginationParam {
 
 	private static final long serialVersionUID = 1L;
 
