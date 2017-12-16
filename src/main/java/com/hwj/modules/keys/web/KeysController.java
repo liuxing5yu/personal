@@ -3,13 +3,12 @@
  */
 package com.hwj.modules.keys.web;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,8 +20,6 @@ import com.hwj.modules.base.entity.ResultEntityHashMapImpl;
 import com.hwj.modules.keys.model.KeysModel;
 import com.hwj.modules.keys.model.param.KeysParamModel;
 import com.hwj.modules.keys.service.KeysService;
-import com.hwj.modules.todo.model.TodoModel;
-import com.hwj.modules.todo.service.TodoService;
 
 /**
  * 
@@ -39,16 +36,9 @@ public class KeysController {
 	@Autowired
 	private KeysService service;
 
-	@Autowired
-	private TodoService todoService;
-
 	@RequestMapping("/view")
 	public ModelAndView view() {
 		ModelAndView mv = new ModelAndView("/keys/keys");
-
-		List<TodoModel> todoList = todoService.search(null);
-
-		mv.addObject("todos", todoList);
 		return mv;
 	}
 
@@ -89,6 +79,20 @@ public class KeysController {
 		try {
 			service.edit(model);
 			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "修改成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, e.getMessage());
+		}
+		HttpHeaders headers = new HttpHeaders();
+		return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+	public ResponseEntity<ResultEntity> delete(@PathVariable String id) {
+		ResultEntity result = null;
+		try {
+			service.delete(id);
+			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "删除成功");
 		} catch (Exception e) {
 			e.printStackTrace();
 			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, e.getMessage());

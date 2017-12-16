@@ -13,6 +13,7 @@
 		t.id,t.key,t.raw_desc,t.description
 		from
 		keys t
+		order by last_modify_time desc
 		<where>
 		</where>
 	</select>
@@ -20,7 +21,7 @@
 	<insert id="addOne" parameterType="map">
 		insert into
 		keys
-		(key,raw_desc,description,create_time,update_time)
+		(key,raw_desc,description,create_time,last_modify_time)
 		values
 		(#{key},#{rawDesc},#{desc},sysdate,sysdate)
 	</insert>
@@ -35,6 +36,10 @@
 		where
 		id = #{id}
 	</update>
+
+	<delete id="delete" parameterType="string">
+		delete from keys where id = #{id}
+	</delete>
 
 	<delete id="clearTable">
 		delete from keys

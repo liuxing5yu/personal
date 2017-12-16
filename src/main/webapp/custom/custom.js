@@ -28,7 +28,7 @@ var DATATABLES_DEFAULT_OPTIONS = {
 	},
 	stripeClasses : [ "odd", "even" ], // 为奇偶行加上样式，兼容不支持CSS伪类的场合
 	dom : 'rt<"bottom"iflp<"clear">>',
-	stateSave : true,
+	stateSave : false,
 	searching : false, // 禁用原生搜索
 	serverSide : true, //启用服务器端分页
 	ordering : false

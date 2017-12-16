@@ -28,4 +28,6 @@ public interface KeysDao {
 
 	void edit(Map<String, Object> map);
 
+	void delete(String id);
+
 }

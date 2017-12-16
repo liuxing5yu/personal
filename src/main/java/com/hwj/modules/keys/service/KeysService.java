@@ -56,4 +56,13 @@ public class KeysService {
 		dao.edit(map);
 	}
 
+	/**
+	 * 
+	 *
+	 * @param id
+	 */
+	public void delete(String id) {
+		dao.delete(id);
+	}
+
 }

@@ -3,9 +3,10 @@
  */
 package com.hwj.modules.todo.dao;
 
-import java.util.List;
 import java.util.Map;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.hwj.modules.base.util.MyBatisRepository;
 import com.hwj.modules.todo.model.TodoModel;
 
@@ -19,6 +20,21 @@ import com.hwj.modules.todo.model.TodoModel;
 @MyBatisRepository
 public interface TodoDao {
 
-	List<TodoModel> search(Map<String, Object> map);
+	PageList<TodoModel> search(Map<String, Object> map, PageBounds pageBounds);
+
+	/**
+	 * 
+	 *
+	 * @param map
+	 */
+	void add(Map<String, Object> map);
+
+	/**
+	 * 
+	 *
+	 * @param id
+	 * @param status
+	 */
+	void changeStatus(Map<String, Object> map);
 
 }

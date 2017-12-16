@@ -12,8 +12,25 @@
 		t.id,t.content,t.status
 		from
 		todo t
+		order by status,last_modify_time desc
 		<where>
 		</where>
 	</select>
+
+	<insert id="add" parameterType="map">
+		insert into
+		todo
+		(content,create_time)
+		values
+		(#{content},sysdate)
+	</insert>
+
+	<update id="changeStatus" parameterType="map">
+		update todo
+		set
+		status = #{status}
+		where
+		id = #{id}
+	</update>
 
 </mapper>

@@ -35,4 +35,5 @@ public class TodoModel {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
 }

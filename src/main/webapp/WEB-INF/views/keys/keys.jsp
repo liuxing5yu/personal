@@ -20,6 +20,7 @@ table.dataTable tbody tr.selected input {
 			<div class="panel-heading">快捷键管理程序</div>
 			<div class="panel-body">为了更方便的添加快捷键</div>
 		</div>
+
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<form id="keyForm" class="form">
@@ -85,25 +86,30 @@ table.dataTable tbody tr.selected input {
 								<button type="button" id="batch-save-btn" class="btn btn-success">批量保存</button>
 							</div>
 						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<table id="tp" class="table table-striped table-bordered table-condensed">
-							<thead>
-								<tr>
-									<th>序号</th>
-									<th>快捷键</th>
-									<th>官方描述</th>
-									<th>描述</th>
-									<th>操作</th>
-								</tr>
-							</thead>
-						</table>
+
+						<!-- 清除浮动 -->
+						<div class="clearfix" style="margin-bottom: 10px;"></div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<table id="tp" class="table table-striped table-bordered table-condensed">
+									<thead>
+										<tr>
+											<th>序号</th>
+											<th>快捷键</th>
+											<th>官方描述</th>
+											<th>描述</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+								</table>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h2>ToDo List</h2>
@@ -116,16 +122,32 @@ table.dataTable tbody tr.selected input {
 					</div>
 					<div class="panel-body">
 						<div class="row">
-							<div class="col-md-3 btn-group">123</div>
+							<div class="col-md-11">
+								<input type="text" class="form-control" id="todoInput" name="todoInput" />
+							</div>
+							<div class="col-md-1">
+								<button type="button" id="addTodoBtn" class="btn btn-success">添加</button>
+							</div>
+						</div>
+
+						<!-- 清除浮动 -->
+						<div class="clearfix" style="margin-bottom: 10px;"></div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<table id="todoDt" class="table table-striped table-bordered table-condensed">
+									<thead>
+										<tr>
+											<th>序号</th>
+											<th>TODO</th>
+											<th>状态</th>
+										</tr>
+									</thead>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
-
-				<ul class="list-group">
-					<c:forEach var="item" items="${todos }">
-						<li class="list-group-item">${item.content }</li>
-					</c:forEach>
-				</ul>
 			</div>
 		</div>
 	</div>
