@@ -18,12 +18,22 @@
 		</where>
 	</select>
 
+	<select id="checkExist" parameterType="string" resultType="int">
+		select
+		count(1)
+		from
+		keys t
+		where t.key = #{key}
+		<where>
+		</where>
+	</select>
+
 	<insert id="addOne" parameterType="map">
 		insert into
 		keys
-		(key,raw_desc,description,create_time,last_modify_time)
+		(key,raw_desc,description,create_time)
 		values
-		(#{key},#{rawDesc},#{desc},sysdate,sysdate)
+		(#{key},#{rawDesc},#{desc},sysdate)
 	</insert>
 
 	<update id="edit">
@@ -31,8 +41,7 @@
 		set
 		key = #{key},
 		raw_desc = #{rawDesc},
-		description = #{desc},
-		update_time = sysdate
+		description = #{desc}
 		where
 		id = #{id}
 	</update>

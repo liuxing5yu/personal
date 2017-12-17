@@ -23,20 +23,20 @@ table.dataTable tbody tr.selected input {
 
 		<div class="panel panel-default">
 			<div class="panel-body">
-				<form id="keyForm" class="form">
-					<div class="row">
-						<div class="col-md-4">
-							<div class="input-group">
-								<span class="input-group-addon">快捷键</span>
-								<input type="text" class="form-control input-md" readonly id="key" name="key" />
-							</div>
+				<form id="keyForm" class="form form-horizontal">
+
+					<!-- <div class="form-group">
+						<label class="col-sm-2 control-label">Email</label>
+						<div class="col-sm-10">
+							<input type="password" class="form-control" id="inputPassword" placeholder="Password">
 						</div>
-					</div>
+					</div> -->
+
 					<div class="row">
 						<div class="col-md-5">
 							<div class="input-group">
-								<span class="input-group-addon">官方描述</span>
-								<textarea class="form-control input-md" id="rawDesc" name="rawDesc"></textarea>
+								<span class="input-group-addon">快捷键</span>
+								<input type="text" class="form-control input-md" readonly id="key" name="key" />
 							</div>
 						</div>
 					</div>
@@ -48,15 +48,25 @@ table.dataTable tbody tr.selected input {
 							</div>
 						</div>
 					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="input-group">
+								<span class="input-group-addon">官方描述</span>
+								<textarea class="form-control input-md" id="rawDesc" name="rawDesc"></textarea>
+							</div>
+						</div>
+					</div>
 				</form>
 
 				<div class="row">
-					<div class="col-md-2">
+					<div class="col-md-12">
 						<div class="btn-group">
 							<button id="singleKeyModeBtn" type="button" class="btn btn-default" title="单键模式">单</button>
 							<button id="multiKeyModeBtn" type="button" class="btn btn-default" title="多键模式">多</button>
+							<button id="addOrBtn" type="button" class="btn btn-default" title="加或模式">或</button>
 							<button id="addKeyBtn" type="button" class="btn btn-default" title="二级按键">加</button>
 							<button id="clearInputBtn" type="button" class="btn btn-default" title="清空内容">清</button>
+							<button id="reduceBtn" type="button" class="btn btn-default" title="还原设置">原</button>
 						</div>
 					</div>
 				</div>
@@ -97,8 +107,8 @@ table.dataTable tbody tr.selected input {
 										<tr>
 											<th>序号</th>
 											<th>快捷键</th>
-											<th>官方描述</th>
 											<th>描述</th>
+											<th>官方描述</th>
 											<th>操作</th>
 										</tr>
 									</thead>

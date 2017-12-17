@@ -66,11 +66,11 @@ $(document).ready(function() {
 			data : "key",
 			title : "快捷键",
 		}, {
-			data : "rawDesc",
-			title : "官方描述",
-		}, {
 			data : "desc",
 			title : "描述",
+		}, {
+			data : "rawDesc",
+			title : "官方描述",
 		}, {
 			"data" : null,
 			"title" : "操作",
@@ -186,21 +186,40 @@ $(document).ready(function() {
 
 		var param = JSON.stringify(entity);
 
+		// 判断快捷键是否已存在
 		$.ajax({
 			type : "POST",
-			url : _path + "/keys/add",
+			url : _path + "/keys/checkExist",
 			cache : false, // 禁用缓存
 			data : param, // 传入已封装的参数
 			contentType : 'application/json;charset=utf-8',
 			dataType : "json",
 			success : function(result) {
 				if (result.status == "S") {
-					_table.draw();
-					toastr['success'](result.message);
+					// 快捷键未存在时添加
+					$.ajax({
+						type : "POST",
+						url : _path + "/keys/add",
+						cache : false, // 禁用缓存
+						data : param, // 传入已封装的参数
+						contentType : 'application/json;charset=utf-8',
+						dataType : "json",
+						success : function(result) {
+							if (result.status == "S") {
+								_table.draw();
+								toastr['success'](result.message);
 
-					// 清空表单内容
-					$('#keyForm')[0].reset();
-					$('#key').focus();
+								// 清空表单内容
+								$('#keyForm')[0].reset();
+								clearKeyInput();
+							} else {
+								toastr['error'](result.message);
+							}
+						},
+						error : function(XMLHttpRequest, textStatus, errorThrown) {
+							toastr['error']('发生错误');
+						}
+					});
 				} else {
 					toastr['error'](result.message);
 				}
@@ -507,13 +526,17 @@ $(document).ready(function() {
 		}
 
 		// 是否为加级模式
-		if (!addKeyMode) {
+		if (!addKeyMode && !addOrMode) {
 			keys.push(eventKey);
 			// 调整键位显示顺序
 			sortKeys(keys);
 			$(this).val(keys.join('+'));
 		} else {
-			$(this).val(keys.join('+') + ', ' + eventKey);
+			if (addKeyMode) {
+				$(this).val(keys.join('+') + ', ' + eventKey);
+			} else if (addOrMode) {
+				$(this).val(keys.join('+') + '/' + eventKey);
+			}
 		}
 		return false;
 	});
@@ -538,12 +561,39 @@ $(document).ready(function() {
 		$('#singleKeyModeBtn').toggleClass('active');
 		$('#multiKeyModeBtn').toggleClass('active');
 
+		addOrMode = false;
 		addKeyMode = false;
+		$('#addOrBtn').removeClass('active');
+		$('#addKeyBtn').removeClass('active');
 
 		// 清空Input
 		clearKeyInput();
 
 	}
+
+	// 加或模式
+	var addOrMode = false;
+
+	// 绑定加级按钮
+	$('#addOrBtn').on('click', function() {
+		$('#key').focus();
+
+		if (!keys.length) {
+			return false;
+		}
+
+		addOrMode = true;
+		addKeyMode = false;
+		$('#addOrBtn').addClass('active');
+		$('#addKeyBtn').removeClass('active');
+
+		// 手动切换为单键模式
+		if (multiMode) {
+			multiMode = false;
+			$('#singleKeyModeBtn').toggleClass('active');
+			$('#multiKeyModeBtn').toggleClass('active');
+		}
+	});
 
 	// 加级模式
 	var addKeyMode = false;
@@ -556,7 +606,10 @@ $(document).ready(function() {
 			return false;
 		}
 
+		addOrMode = false;
 		addKeyMode = true;
+		$('#addOrBtn').removeClass('active');
+		$('#addKeyBtn').addClass('active');
 
 		// 手动切换为单键模式
 		if (multiMode) {
@@ -568,6 +621,23 @@ $(document).ready(function() {
 
 	// 绑定清除按钮
 	$('#clearInputBtn').on('click', function() {
+		clearKeyInput();
+	});
+
+	// 绑定还原按钮
+	$('#reduceBtn').on('click', function() {
+		// 还原为多键模式
+		multiMode = true;
+		$('#singleKeyModeBtn').removeClass('active');
+		$('#multiKeyModeBtn').addClass('active');
+
+		// 还原或、加
+		addOrMode = false;
+		addKeyMode = false;
+		$('#addOrBtn').removeClass('active');
+		$('#addKeyBtn').removeClass('active');
+
+		// 设置焦点
 		clearKeyInput();
 	});
 

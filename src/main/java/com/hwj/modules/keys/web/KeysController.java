@@ -59,6 +59,24 @@ public class KeysController {
 		return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/checkExist", method = RequestMethod.POST)
+	public ResponseEntity<ResultEntity> checkExist(@RequestBody KeysModel model) {
+		ResultEntity result = null;
+		try {
+			int num = service.checkExist(model.getKey());
+			if (num > 0) {
+				result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "快捷键已存在");
+			} else {
+				result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "快捷键未存在");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, e.getMessage());
+		}
+		HttpHeaders headers = new HttpHeaders();
+		return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<ResultEntity> add(@RequestBody KeysModel model) {
 		ResultEntity result = null;

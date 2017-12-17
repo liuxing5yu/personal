@@ -54,6 +54,7 @@ public class KeysService {
 		Map<String, Object> map = new HashMap<>();
 		MapUtil.object2Map(map, model);
 		dao.edit(map);
+		
 	}
 
 	/**
@@ -63,6 +64,16 @@ public class KeysService {
 	 */
 	public void delete(String id) {
 		dao.delete(id);
+	}
+
+	/**
+	 * 
+	 *
+	 * @param key
+	 * @return
+	 */
+	public int checkExist(String key) {
+		return dao.checkExist(key);
 	}
 
 }

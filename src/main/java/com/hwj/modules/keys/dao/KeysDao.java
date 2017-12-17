@@ -30,4 +30,6 @@ public interface KeysDao {
 
 	void delete(String id);
 
+	int checkExist(String key);
+
 }
