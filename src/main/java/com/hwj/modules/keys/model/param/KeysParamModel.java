@@ -19,6 +19,8 @@ public class KeysParamModel extends PaginationParam {
 	private String key;
 	private String desc;
 
+	private String scene;
+
 	public String getKey() {
 		return key;
 	}
@@ -33,6 +35,14 @@ public class KeysParamModel extends PaginationParam {
 
 	public void setDesc(String desc) {
 		this.desc = desc;
+	}
+
+	public String getScene() {
+		return scene;
+	}
+
+	public void setScene(String scene) {
+		this.scene = scene;
 	}
 
 }

@@ -22,8 +22,24 @@ table.dataTable tbody tr.selected input {
 		</div>
 
 		<div class="panel panel-default">
+			<div class="panel-heading">所在场景</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-1">
+						<button type="button" class="sceneBtn btn btn-default active" title="Eclipse" data-scene='0'>Eclipse</button>
+					</div>
+
+					<div class="col-md-1">
+						<button type="button" class="sceneBtn btn btn-default" title="Windows" data-scene='1'>Windows</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="panel panel-default">
 			<div class="panel-body">
 				<form id="keyForm" class="form form-horizontal">
+					<input type="hidden" id="scene" name="scene" value="0" />
 
 					<!-- <div class="form-group">
 						<label class="col-sm-2 control-label">Email</label>

@@ -13,22 +13,21 @@
 		from
 		todo t
 		order by status,last_modify_time desc
-		<where>
-		</where>
 	</select>
 
 	<insert id="add" parameterType="map">
 		insert into
 		todo
-		(content,create_time)
+		(content,create_time,last_modify_time)
 		values
-		(#{content},sysdate)
+		(#{content},sysdate,sysdate)
 	</insert>
 
 	<update id="changeStatus" parameterType="map">
 		update todo
 		set
-		status = #{status}
+		status = #{status},
+		last_modify_time = sysdate
 		where
 		id = #{id}
 	</update>

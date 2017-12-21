@@ -5,6 +5,7 @@ $(document).ready(function() {
 			var param = {};
 
 			// 页面参数
+			param.scene = $('#scene').val();
 
 			// 组装分页参数
 			param.pageNow = data.start / data.length + 1;
@@ -183,6 +184,7 @@ $(document).ready(function() {
 		entity.key = $('#key').val();
 		entity.rawDesc = $('#rawDesc').val();
 		entity.desc = $('#desc').val();
+		entity.scene = $('#scene').val();
 
 		var param = JSON.stringify(entity);
 
@@ -354,6 +356,11 @@ $(document).ready(function() {
 					text : '确定',
 					btnClass : 'btn-danger',
 					action : function() {
+						var entity = {};
+						entity.scene = $('#scene').val();
+
+						var param = JSON.stringify(entity);
+
 						$.ajax({
 							type : "POST",
 							url : _path + "/keys/clearTable",
@@ -492,8 +499,10 @@ $(document).ready(function() {
 		39 /* ArrowRight */: 'Right',
 		107 /* + */: 'Numpad_Add',
 		109 /*-*/: 'Numpad_Subtract',
-		106 /*-*/: 'Numpad_Multiply',
-		111 /*-*/: 'Numpad_Divide',
+		106 /***/
+		: 'Numpad_Multiply',
+		111 /*/*/: 'Numpad_Divide',
+		91 /*Meta*/: 'Win',
 	};
 
 	var keys = [];
@@ -660,7 +669,7 @@ $(document).ready(function() {
 		}
 		var curIndex = 0;
 
-		var commands = [ 'Ctrl', 'Alt', 'Shift' ];
+		var commands = [ 'Win', 'Ctrl', 'Alt', 'Shift' ];
 		for ( var cmdIdx in commands) {
 			console.log('curIndex...' + curIndex);
 			var index = keys.indexOf(commands[cmdIdx]);
@@ -672,4 +681,13 @@ $(document).ready(function() {
 		}
 	}
 
+	// 绑定场景按钮
+	$('.sceneBtn').on('click', function() {
+		// 设置样式
+		$('.sceneBtn').removeClass("active");
+		$(this).addClass('active');
+
+		$('#scene').val($(this).data('scene'));
+		_table.draw();
+	});
 });

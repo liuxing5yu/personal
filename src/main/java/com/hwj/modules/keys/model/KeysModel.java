@@ -15,10 +15,7 @@ public class KeysModel {
 	private String key;
 	private String desc;
 	private String rawDesc;
-
-	public KeysModel() {
-		super();
-	}
+	private String scene;
 
 	public String getKey() {
 		return key;
@@ -50,5 +47,13 @@ public class KeysModel {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getScene() {
+		return scene;
+	}
+
+	public void setScene(String scene) {
+		this.scene = scene;
 	}
 }

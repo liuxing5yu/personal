@@ -54,7 +54,7 @@ public class KeysService {
 		Map<String, Object> map = new HashMap<>();
 		MapUtil.object2Map(map, model);
 		dao.edit(map);
-		
+
 	}
 
 	/**
@@ -69,11 +69,13 @@ public class KeysService {
 	/**
 	 * 
 	 *
-	 * @param key
+	 * @param model
 	 * @return
 	 */
-	public int checkExist(String key) {
-		return dao.checkExist(key);
+	public int checkExist(KeysModel model) {
+		Map<String, Object> map = new HashMap<>();
+		MapUtil.object2Map(map, model);
+		return dao.checkExist(map);
 	}
 
 }

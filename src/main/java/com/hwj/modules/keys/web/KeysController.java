@@ -63,7 +63,7 @@ public class KeysController {
 	public ResponseEntity<ResultEntity> checkExist(@RequestBody KeysModel model) {
 		ResultEntity result = null;
 		try {
-			int num = service.checkExist(model.getKey());
+			int num = service.checkExist(model);
 			if (num > 0) {
 				result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "快捷键已存在");
 			} else {

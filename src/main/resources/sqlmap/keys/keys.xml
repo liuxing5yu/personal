@@ -6,6 +6,7 @@
 		<result property="key" column="KEY" jdbcType="VARCHAR" />
 		<result property="desc" column="DESCRIPTION" jdbcType="VARCHAR" />
 		<result property="rawDesc" column="RAW_DESC" jdbcType="VARCHAR" />
+		<result property="scene" column="SCENE" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<select id="search" parameterType="map" resultMap="KeysModelMap">
@@ -13,27 +14,29 @@
 		t.id,t.key,t.raw_desc,t.description
 		from
 		keys t
+		where 1=1
+		<if test="scene != null and scene != ''">
+			and t.scene = #{scene}
+		</if>
 		order by last_modify_time desc
-		<where>
-		</where>
 	</select>
 
-	<select id="checkExist" parameterType="string" resultType="int">
+	<select id="checkExist" parameterType="map" resultType="int">
 		select
 		count(1)
 		from
 		keys t
-		where t.key = #{key}
-		<where>
-		</where>
+		where 1=1
+		and t.key = #{key}
+		and t.scene = #{scene}
 	</select>
 
 	<insert id="addOne" parameterType="map">
 		insert into
 		keys
-		(key,raw_desc,description,create_time)
+		(key,raw_desc,description,create_time,last_modify_time,scene)
 		values
-		(#{key},#{rawDesc},#{desc},sysdate)
+		(#{key},#{rawDesc},#{desc},sysdate,sysdate,#{scene})
 	</insert>
 
 	<update id="edit">
@@ -41,17 +44,22 @@
 		set
 		key = #{key},
 		raw_desc = #{rawDesc},
-		description = #{desc}
-		where
-		id = #{id}
+		description = #{desc},
+		last_modify_time = sysdate
+		where 1=1
+		and id = #{id}
 	</update>
 
 	<delete id="delete" parameterType="string">
-		delete from keys where id = #{id}
+		delete from keys
+		where 1=1
+		and id = #{id}
 	</delete>
 
-	<delete id="clearTable">
-		delete from keys
+	<delete id="clearTable" parameterType="string">
+		delete from keys t
+		where 1=1
+		and t.scene = #{scene}
 	</delete>
 
 </mapper>
