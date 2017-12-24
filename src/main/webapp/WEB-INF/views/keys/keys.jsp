@@ -24,15 +24,7 @@ table.dataTable tbody tr.selected input {
 		<div class="panel panel-default">
 			<div class="panel-heading">所在场景</div>
 			<div class="panel-body">
-				<div class="row">
-					<div class="col-md-1">
-						<button type="button" class="sceneBtn btn btn-default active" title="Eclipse" data-scene='0'>Eclipse</button>
-					</div>
-
-					<div class="col-md-1">
-						<button type="button" class="sceneBtn btn btn-default" title="Windows" data-scene='1'>Windows</button>
-					</div>
-				</div>
+				<div class="row" id="sceneDiv"></div>
 			</div>
 		</div>
 

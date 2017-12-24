@@ -1,5 +1,35 @@
 $(document).ready(function() {
 
+	{
+		var entity = {};
+		entity.codekind = 'KEY_SCENE';
+		entity.status = '1';
+		var param = JSON.stringify(entity);
+		// 初始化快捷键场景
+		$.ajax({
+			type : "POST",
+			url : _path + "/codelist/get",
+			cache : false, // 禁用缓存
+			data : param, // 传入已封装的参数
+			contentType : 'application/json;charset=utf-8',
+			dataType : "json",
+			success : function(result) {
+				if (result.status == "S") {
+					var $sceneDiv = $('#sceneDiv');
+					$.each(result.data, function(index, item) {
+						var divStr = '<div class="col-md-1"><button type="button" class="sceneBtn btn btn-default" data-scene="' + item.codevalue + '">' + item.codename + '</button></div>';
+						$sceneDiv.append($(divStr));
+					});
+				} else {
+					toastr['error'](result.message);
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				toastr['error']('发生错误');
+			}
+		});
+	}
+
 	var manage = {
 		getQueryCondition : function(data) {
 			var param = {};
@@ -682,7 +712,7 @@ $(document).ready(function() {
 	}
 
 	// 绑定场景按钮
-	$('.sceneBtn').on('click', function() {
+	$('#sceneDiv').on('click', 'button.sceneBtn', function() {
 		// 设置样式
 		$('.sceneBtn').removeClass("active");
 		$(this).addClass('active');
