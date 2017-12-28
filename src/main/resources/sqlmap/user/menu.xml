@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwj.modules.user.dao.MenuDao">
+
+	<resultMap type="MenuNode" id="MenuNodeMap">
+		<id property="id" column="ID" jdbcType="VARCHAR" />
+		<result property="text" column="NAME" jdbcType="VARCHAR" />
+		<result property="url" column="URL" jdbcType="VARCHAR" />
+		<result property="pId" column="PARENT_ID" jdbcType="VARCHAR" />
+		<result property="sequenceNo" column="SEQUENCE_NO" jdbcType="INTEGER" />
+		<result property="isVisible" column="IS_VISIBLE" jdbcType="INTEGER" />
+		<result property="isMenu" column="IS_MENU" jdbcType="INTEGER" />
+		<result property="dateCreate" column="DATE_CREATE" jdbcType="VARCHAR" />
+		<result property="dateUpdate" column="DATE_CREATE" jdbcType="VARCHAR" />
+		<result property="icon" column="ICON_CLASS" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="getRootMenuNode" resultMap="MenuNodeMap">
+		select * from user_menu where id = '0'
+	</select>
+
+	<select id="findMenuByPermiss" resultMap="MenuNodeMap">
+		select * from user_menu
+	</select>
+
+	<select id="getChildren" parameterType="com.hwj.modules.user.model.MenuNode" resultMap="MenuNodeMap">
+		select
+		id,
+		NAME,
+		URL,
+		PARENT_ID,
+		SEQUENCE_NO,
+		IS_VISIBLE,
+		IS_MENU,
+		DATE_CREATE,
+		DATE_UPDATE,
+		ICON_CLASS
+		from
+		user_menu
+		where parent_id = #{id}
+		order by SEQUENCE_NO asc
+	</select>
+	<select id="getShowChildren" parameterType="com.hwj.modules.user.model.MenuNode" resultMap="MenuNodeMap">
+		select
+		id,
+		NAME,
+		URL,
+		PARENT_ID,
+		SEQUENCE_NO,
+		IS_VISIBLE,
+		IS_MENU,
+		DATE_CREATE,
+		DATE_UPDATE,
+		ICON_CLASS
+		from
+		user_menu where parent_id = #{id}
+		order by
+		SEQUENCE_NO asc
+	</select>
+
+	<insert id="addMenu" parameterType="com.hwj.modules.user.model.MenuNode">
+		insert into USER_MENU (
+		id
+		<if test="name !=null and name != ''">
+			,name
+		</if>
+		<if test="url !=null and url != ''">
+			,url
+		</if>
+		<if test="pId !=null and pId != ''">
+			,parent_id
+		</if>
+		<if test="sequenceNo !=null and sequenceNo != ''">
+			,sequence_no
+		</if>
+		<if test="icon !=null and icon != ''">
+			,icon_class
+		</if>
+		,date_create
+		,date_update
+		) values(
+		#{id}
+		<if test="name !=null and name != ''">
+			,#{name}
+		</if>
+		<if test="url !=null and url != ''">
+			,#{url}
+		</if>
+		<if test="pId !=null and pId != ''">
+			,#{pId}
+		</if>
+		<if test="sequenceNo !=null and sequenceNo != ''">
+			,#{sequenceNo}
+		</if>
+		<if test="icon !=null and icon != ''">
+			,#{icon}
+		</if>
+		,sysdate
+		,sysdate
+		)
+	</insert>
+
+	<select id="findMenuById" parameterType="string" resultMap="MenuNodeMap">
+		select * from user_menu where id = #{id}
+	</select>
+
+	<update id="updateMenu" parameterType="com.hwj.modules.user.model.MenuNode">
+		update USER_MENU set
+		<if test="name !=null and name != ''">
+			name = #{name},
+		</if>
+		<if test="url !=null and url != ''">
+			url = #{url},
+		</if>
+		<if test="pId !=null and pId != ''">
+			parent_id = #{pId},
+		</if>
+		<if test="sequenceNo !=null and sequenceNo != ''">
+			sequence_no = #{sequenceNo},
+		</if>
+		<if test="icon !=null and icon != ''">
+			icon_class = #{icon},
+		</if>
+		date_update = sysdate where id = #{id}
+	</update>
+
+	<delete id="deleteMenu" parameterType="string">
+		delete from USER_MENU where id = #{id}
+	</delete>
+
+</mapper> 
