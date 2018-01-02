@@ -1,5 +1,6 @@
 $(document).ready(function() {
-
+	var app = 'keys';
+	
 	{
 		var entity = {};
 		entity.codekind = 'KEY_SCENE';
@@ -124,6 +125,7 @@ $(document).ready(function() {
 			var param = {};
 
 			// 页面参数
+			param.app = app;
 
 			// 组装分页参数
 			param.pageNow = data.start / data.length + 1;
@@ -438,6 +440,7 @@ $(document).ready(function() {
 	$('#addTodoBtn').on('click', function() {
 		var entity = {};
 		entity.content = $('#todoInput').val();
+		entity.app = app;
 
 		var param = JSON.stringify(entity);
 

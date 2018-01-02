@@ -18,11 +18,21 @@ public class TodoParamModel extends PaginationParam {
 
 	private String content;
 
+	private String app;
+
 	public String getContent() {
 		return content;
 	}
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public String getApp() {
+		return app;
+	}
+
+	public void setApp(String app) {
+		this.app = app;
 	}
 }
