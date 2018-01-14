@@ -97,7 +97,6 @@ $(document).ready(function() {
 
 	// 添加
 	$('#saveRow').on('click', function() {
-
 		var title = $('#title').val();
 		var url = $('#url').val();
 		if (!(title && url)) {
@@ -108,7 +107,14 @@ $(document).ready(function() {
 		var entity = {};
 		entity.title = title;
 		entity.url = url;
-
+		
+		var tagIds = [];
+		// 获取所有选中的tag
+		$("#addTagBtnGroupDiv .tag-btn.btn-primary").each(function (index, domEle) { 
+			tagIds.push($(domEle).attr('data-tagId'));
+		});
+		entity.tagIds = tagIds;
+		
 		var param = JSON.stringify(entity);
 
 		$.ajax({
@@ -127,6 +133,7 @@ $(document).ready(function() {
 					$('#title').focus();
 					$('#title').val('');
 					$('#url').val('');
+					$("#addTagBtnGroupDiv .tag-btn").removeClass('btn-primary');
 
 				} else {
 					toastr['error'](result.message);
@@ -186,6 +193,86 @@ $(document).ready(function() {
 		});
 
 	});
+
+	// ---------------------Tag BEGIN------------------------------------------------
+	showAllTags();
+	// 查询所有的Tag
+	function showAllTags() {
+		var entity = {};
+		entity.idValid = '1';
+
+		var param = JSON.stringify(entity);
+
+		$.ajax({
+			type : "POST",
+			url : _path + "/collectTag/search",
+			cache : false, // 禁用缓存
+			data : param, // 传入已封装的参数
+			contentType : 'application/json;charset=utf-8',
+			dataType : "json",
+			success : function(result) {
+				if (result.status == "S") {
+					// 清空所有tag button
+					$('#tagBtnGroupDiv').empty();
+					$('#addTagBtnGroupDiv').empty();
+
+					// 遍历数组，添加标签button
+					$.each(result.data, function(index, item) {
+						var btnStr = '<div class="col-md-1"><button type="button" class="btn btn-primary btn-sm" style="width:100%;">' + item.name + '</button></div>';
+						var addBtnStr = '<div class="col-md-1"><button type="button" class="btn btn-default btn-sm tag-btn" style="width:100%;" data-tagId=' + item.id + '>' + item.name + '</button></div>';
+						$('#tagBtnGroupDiv').append($(btnStr));
+						$('#addTagBtnGroupDiv').append($(addBtnStr));
+					});
+				} else {
+					toastr['error'](result.message);
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				toastr['error']('发生错误');
+			}
+		});
+	}
+
+	// 添加Tag
+	$('#addTagBtn').on('click', function() {
+		var entity = {};
+		entity.name = $('#tagInput').val();
+		entity.app = app;
+
+		var param = JSON.stringify(entity);
+
+		$.ajax({
+			type : "POST",
+			url : _path + "/collectTag/add",
+			cache : false, // 禁用缓存
+			data : param, // 传入已封装的参数
+			contentType : 'application/json;charset=utf-8',
+			dataType : "json",
+			success : function(result) {
+				if (result.status == "S") {
+					toastr['success'](result.message);
+					// 添加进tag组中
+					showAllTags();
+
+					// 清空输入内容
+					$('#tagInput').val('');
+				} else {
+					toastr['error'](result.message);
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				toastr['error']('发生错误');
+			}
+		});
+
+	});
+
+	// 添加收藏时，点击标签按钮，增加事件
+	$("#addTagBtnGroupDiv").on("click", ".tag-btn", function() {
+		// 获取选中的tagId
+		$(this).toggleClass('btn-primary');
+	});
+	// ---------------------Tag END------------------------------------------------	
 
 	// ---------------------Todo BEGIN------------------------------------------------
 	var todoManage = {

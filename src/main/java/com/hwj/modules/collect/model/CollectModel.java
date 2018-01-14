@@ -1,5 +1,7 @@
 package com.hwj.modules.collect.model;
 
+import java.util.List;
+
 /**
  * 
  *
@@ -12,6 +14,7 @@ public class CollectModel {
 	private String title;
 	private String url;
 	private String status;
+	private List<CollectTagModel> tags;
 
 	public String getId() {
 		return id;
@@ -43,6 +46,14 @@ public class CollectModel {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public List<CollectTagModel> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<CollectTagModel> tags) {
+		this.tags = tags;
 	}
 
 }

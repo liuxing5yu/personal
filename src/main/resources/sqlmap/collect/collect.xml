@@ -6,6 +6,13 @@
 		<result property="title" column="COLLECT_TITLE" jdbcType="VARCHAR" />
 		<result property="url" column="COLLECT_URL" jdbcType="VARCHAR" />
 		<result property="status" column="STATUS" jdbcType="VARCHAR" />
+
+		<collection property="tags" ofType="com.hwj.modules.collect.model.CollectTagModel">
+			<result property="id" column="TAG_ID" jdbcType="VARCHAR" />
+			<result property="lastModifyTime" column="TAG_LAST_MODIFY_TIME" jdbcType="DATE" />
+			<result property="name" column="TAG_NAME" jdbcType="VARCHAR" />
+			<result property="isValid" column="TAG_ISVALID" jdbcType="VARCHAR" />
+		</collection>
 	</resultMap>
 
 	<select id="search" parameterType="map" resultMap="CollectModelMap">
@@ -18,7 +25,7 @@
 
 	<insert id="add" parameterType="map">
 		insert into collect t(t.id,t.collect_title,t.collect_url,t.status,t.last_modify_time)
-		values(sys_guid(),#{title},#{url},'0',sysdate)
+		values(#{id},#{title},#{url},'0',sysdate)
 	</insert>
 
 	<update id="edit">

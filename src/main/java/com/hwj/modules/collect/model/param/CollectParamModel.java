@@ -3,6 +3,8 @@
  */
 package com.hwj.modules.collect.model.param;
 
+import java.util.List;
+
 import com.hwj.modules.base.entity.PaginationParam;
 
 /**
@@ -18,6 +20,7 @@ public class CollectParamModel extends PaginationParam {
 
 	private String title;
 	private String url;
+	private List<String> tagIds;
 
 	public String getTitle() {
 		return title;
@@ -33,6 +36,14 @@ public class CollectParamModel extends PaginationParam {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public List<String> getTagIds() {
+		return tagIds;
+	}
+
+	public void setTagIds(List<String> tagIds) {
+		this.tagIds = tagIds;
 	}
 
 }

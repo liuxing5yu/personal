@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hwj.modules.collect.dao.CollectCollectTagDao">
+
+	<insert id="add" parameterType="map">
+		insert into collect_collect_tag t(t.collect_id,t.collect_tag_id)
+		select #{collectId} collect_id, collect_tag_id from
+		(
+		<foreach collection="collectTagIds" item="tagId" separator="union all">
+			select
+			#{collectId} collect_id,
+			#{tagId} collect_tag_id
+			from dual
+		</foreach>
+		)
+	</insert>
+</mapper>

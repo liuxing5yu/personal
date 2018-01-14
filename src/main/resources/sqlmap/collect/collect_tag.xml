@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hwj.modules.collect.dao.CollectTagDao">
+	<resultMap type="com.hwj.modules.collect.model.CollectTagModel" id="CollectTagModelMap">
+		<result property="id" column="ID" jdbcType="VARCHAR" />
+		<result property="lastModifyTime" column="LAST_MODIFY_TIME" jdbcType="DATE" />
+		<result property="name" column="NAME" jdbcType="VARCHAR" />
+		<result property="isValid" column="ISVALID" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="search" parameterType="map" resultMap="CollectTagModelMap">
+		select * from collect_tag t
+		where 1=1
+		<if test="isValid != null and isValid != ''">
+			and t.isvalid = #{isValid}
+		</if>
+		order by upper(t.name)
+	</select>
+
+	<insert id="add" parameterType="map">
+		insert into collect_tag t(t.name)
+		values(#{name})
+	</insert>
+
+	<update id="edit">
+	</update>
+
+	<delete id="delete" parameterType="string">
+		delete from keys
+		where 1=1
+		and id = #{id}
+	</delete>
+
+	<update id="changeStatus" parameterType="map">
+		update collect
+		set
+		status = #{status},
+		last_modify_time = sysdate
+		where
+		id = #{id}
+	</update>
+</mapper>
