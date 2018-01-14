@@ -64,16 +64,29 @@ $(document).ready(function() {
 		},
 		columns : [ {
 			title : "序号",
+			width : '5%',
 			data : null,
-			width : '8%'
 		}, {
 			title : "标题",
+			width : '50%',
 			data : 'title',
 			render : function(data, type, row, meta) {
 				return "<a target='_blank' href='" + row.url + "'>" + data + "</a>";
 			}
 		}, {
+			title : "标签",
+			width : '30%',
+			data : 'tags',
+			render : function(data, type, row, meta) {
+				var htmlStr = '';
+				$.each(data, function(index, item) {
+					htmlStr += '<button class="btn btn-primary btn-sm">' + item.name + '</button>';
+				});
+				return htmlStr;
+			}
+		}, {
 			title : "状态",
+			width : '15%',
 			data : "status",
 			render : function(data, type, row, meta) {
 				if (data == '1') {

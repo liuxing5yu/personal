@@ -1,10 +1,17 @@
 ----------------------------------------------2018年1月14日------------------------------------------------------------------------
 -- 联表查询收藏和收藏的标签
 select
-    t.id,t.collect_title,t.collect_url,t.status,t.last_modify_time
-		from collect t 
+    t.id,t.collect_title,t.collect_url,t.status,t.last_modify_time,
+    cct.collect_tag_id,
+    ct.id,
+    ct.last_modify_time,
+    ct.name,
+    ct.isvalid
+		from collect t left join collect_collect_tag cct on (t.id = cct.collect_id) left join collect_tag ct on (cct.collect_tag_id = ct.id)
 		where 1=1
 		order by t.status,t.last_modify_time desc;
+    
+delete from collect t where t.id = '3952aa4f-4639-4656-a7c6-d65475942eb7';
 
 
 -- 查询收藏和收藏标签关联表

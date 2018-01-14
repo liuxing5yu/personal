@@ -1,30 +1,49 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hwj.modules.collect.dao.CollectDao">
-	<resultMap type="com.hwj.modules.collect.model.CollectModel" id="CollectModelMap">
+	<resultMap type="com.hwj.modules.collect.model.CollectModel"
+		id="CollectModelMap">
 		<result property="id" column="ID" jdbcType="VARCHAR" />
 		<result property="title" column="COLLECT_TITLE" jdbcType="VARCHAR" />
 		<result property="url" column="COLLECT_URL" jdbcType="VARCHAR" />
 		<result property="status" column="STATUS" jdbcType="VARCHAR" />
 
-		<collection property="tags" ofType="com.hwj.modules.collect.model.CollectTagModel">
+		<collection property="tags"
+			ofType="com.hwj.modules.collect.model.CollectTagModel">
 			<result property="id" column="TAG_ID" jdbcType="VARCHAR" />
-			<result property="lastModifyTime" column="TAG_LAST_MODIFY_TIME" jdbcType="DATE" />
+			<result property="lastModifyTime" column="TAG_LAST_MODIFY_TIME"
+				jdbcType="DATE" />
 			<result property="name" column="TAG_NAME" jdbcType="VARCHAR" />
 			<result property="isValid" column="TAG_ISVALID" jdbcType="VARCHAR" />
 		</collection>
 	</resultMap>
 
 	<select id="search" parameterType="map" resultMap="CollectModelMap">
+		<!-- select t.id,t.collect_title,t.collect_url,t.status,t.last_modify_time 
+			from collect t where 1=1 order by t.status,t.last_modify_time desc -->
 		select
-		t.id,t.collect_title,t.collect_url,t.status,t.last_modify_time
-		from collect t
+		t.id,t.collect_title,t.collect_url,t.status,t.last_modify_time,
+		ct.id tag_id,
+		ct.last_modify_time
+		tag_last_modify_time,
+		ct.name tag_name,
+		ct.isvalid tag_isvalid
+		from
+		collect t left join collect_collect_tag cct
+		on (t.id =
+		cct.collect_id)
+		left join collect_tag ct on
+		(cct.collect_tag_id =
+		ct.id)
 		where 1=1
-		order by t.status,t.last_modify_time desc
+		order
+		by
+		t.status,t.last_modify_time desc;
 	</select>
 
 	<insert id="add" parameterType="map">
-		insert into collect t(t.id,t.collect_title,t.collect_url,t.status,t.last_modify_time)
+		insert into collect
+		t(t.id,t.collect_title,t.collect_url,t.status,t.last_modify_time)
 		values(#{id},#{title},#{url},'0',sysdate)
 	</insert>
 
@@ -34,13 +53,15 @@
 	<delete id="delete" parameterType="string">
 		delete from keys
 		where 1=1
-		and id = #{id}
+		and
+		id = #{id}
 	</delete>
 
 	<update id="changeStatus" parameterType="map">
 		update collect
 		set
-		status = #{status},
+		status
+		= #{status},
 		last_modify_time = sysdate
 		where
 		id = #{id}
