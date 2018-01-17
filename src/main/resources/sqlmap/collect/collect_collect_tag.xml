@@ -14,4 +14,9 @@
 		</foreach>
 		)
 	</insert>
+
+	<delete id="delete" parameterType="string">
+		delete from collect_collect_tag where collect_id = #{id}
+	</delete>
+	
 </mapper>

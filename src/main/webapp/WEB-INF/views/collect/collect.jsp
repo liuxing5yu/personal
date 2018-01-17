@@ -38,7 +38,9 @@ table.dataTable tbody tr.selected input {
 						<!-- 清除浮动 -->
 						<div class="clearfix" style="margin-bottom: 10px;"></div>
 
-						<div id="tagBtnGroupDiv" class="row"></div>
+						<div class="row">
+							<div class="col-md-11 tagBtnGroupDiv"></div>
+						</div>
 
 					</div>
 				</div>
@@ -59,13 +61,6 @@ table.dataTable tbody tr.selected input {
 						<label class="col-sm-1 control-label">URL</label>
 						<div class="col-sm-11">
 							<input type="text" class="form-control" id="url" placeholder="URL" onclick="this.select()" value="http://">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-sm-1 control-label">标签</label>
-						<div class="col-sm-11">
-							<div id="addTagBtnGroupDiv" class="row"></div>
 						</div>
 					</div>
 
@@ -101,6 +96,7 @@ table.dataTable tbody tr.selected input {
 											<th>标题</th>
 											<th>标签</th>
 											<th>状态</th>
+											<th>操作</th>
 										</tr>
 									</thead>
 								</table>
@@ -152,5 +148,31 @@ table.dataTable tbody tr.selected input {
 			</div>
 		</div>
 	</div>
+
+	<div class="modal fade" id="tagModal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="gridSystemModalLabel">标签</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<input type="hidden" id="collectId" name="collectId" />
+						<div class="col-md-11 tagBtnGroupDiv"></div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button id="saveTagBtn" type="button" class="btn btn-primary">Save</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
 </body>
 </html>

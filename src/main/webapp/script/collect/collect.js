@@ -68,7 +68,7 @@ $(document).ready(function() {
 			data : null,
 		}, {
 			title : "标题",
-			width : '50%',
+			width : '40%',
 			data : 'title',
 			render : function(data, type, row, meta) {
 				return "<a target='_blank' href='" + row.url + "'>" + data + "</a>";
@@ -86,7 +86,7 @@ $(document).ready(function() {
 			}
 		}, {
 			title : "状态",
-			width : '15%',
+			width : '5%',
 			data : "status",
 			render : function(data, type, row, meta) {
 				if (data == '1') {
@@ -95,6 +95,11 @@ $(document).ready(function() {
 					return "<button class='status-btn btn btn-danger' type='button'>未读</button>";
 				}
 			}
+		}, {
+			title : "操作",
+			width : '20%',
+			data : null,
+			defaultContent : "<button class='tag-btn btn btn-primary' type='button' data-target='#tagModal'>标签</button><button class='delete-btn btn btn-danger' type='button'>删除</button>"
 		} ],
 
 		// 自增长序号
@@ -120,14 +125,14 @@ $(document).ready(function() {
 		var entity = {};
 		entity.title = title;
 		entity.url = url;
-		
+
 		var tagIds = [];
 		// 获取所有选中的tag
-		$("#addTagBtnGroupDiv .tag-btn.btn-primary").each(function (index, domEle) { 
+		$(".tagBtnGroupDiv .tag-btn.btn-primary").each(function(index, domEle) {
 			tagIds.push($(domEle).attr('data-tagId'));
 		});
 		entity.tagIds = tagIds;
-		
+
 		var param = JSON.stringify(entity);
 
 		$.ajax({
@@ -145,8 +150,8 @@ $(document).ready(function() {
 					// 清空表单内容
 					$('#title').focus();
 					$('#title').val('');
-					$('#url').val('');
-					$("#addTagBtnGroupDiv .tag-btn").removeClass('btn-primary');
+					$('#url').val('http://');
+					$(".tagBtnGroupDiv .tag-btn").removeClass('btn-primary');
 
 				} else {
 					toastr['error'](result.message);
@@ -207,6 +212,121 @@ $(document).ready(function() {
 
 	});
 
+	// 行内删除
+	$("#collectDt tbody").on("click", ".delete-btn", function() {
+		var id = _collectDt.row($(this).parents("tr")).data().id;
+
+		$.confirm({
+			title : 'Confirm!',
+			content : '确定要删除这条记录吗？',
+			buttons : {
+				confirm : {
+					text : '确定',
+					btnClass : 'btn-danger',
+					action : function() {
+
+						$.ajax({
+							type : "POST",
+							url : _path + "/collect/delete/" + id,
+							cache : false, // 禁用缓存
+							//data : param, // 传入已封装的参数
+							contentType : 'application/json;charset=utf-8',
+							dataType : "json",
+							success : function(result) {
+								if (result.status == "S") {
+									_collectDt.draw();
+									toastr['success'](result.message);
+								} else {
+									toastr['error'](result.message);
+								}
+							},
+							error : function(XMLHttpRequest, textStatus, errorThrown) {
+								toastr['error']('发生错误');
+							}
+						});
+					}
+				},
+				cancel : {
+					text : '取消',
+					btnClass : 'btn-default',
+					action : function() {
+					}
+				}
+			}
+		});
+
+	});
+
+	// 修改收藏的标签
+	$("#collectDt tbody").on("click", ".tag-btn", function() {
+		// 清除模态框中所有按钮样式
+		$("#tagModal .tagBtnGroupDiv .tag-btn").removeClass('btn-primary');
+
+		var data = _collectDt.row($(this).parents("tr")).data();
+		var id = data.id;
+		var tags = data.tags;
+
+		// 为模态框隐藏collectId赋值，为了保存时使用
+		$('#tagModal #collectId').val(id);
+
+		// 为已有标签添加样式
+		$('#tagModal .tagBtnGroupDiv button').each(function(index, domEle) {
+			$.each(tags, function(index, item) {
+				if ($(domEle).attr('data-tagId') == item.id) {
+					$(domEle).addClass('btn-primary');
+				}
+			})
+		})
+
+		// 显示模态框
+		$('#tagModal').modal('show');
+	});
+
+	/**
+	 * 模态框保存事件
+	 */
+	$('#saveTagBtn').on('click', function() {
+		// 获取隐藏的id
+		var collectId = $('#tagModal #collectId').val();
+
+		// 获取模态框中选中的tag
+		var tagIds = [];
+		// 获取所有选中的tag
+		$("#tagModal .tagBtnGroupDiv .tag-btn.btn-primary").each(function(index, domEle) {
+			tagIds.push($(domEle).attr('data-tagId'));
+		});
+
+		var entity = {};
+		entity.id = collectId;
+		entity.tagIds = tagIds;
+
+		var param = JSON.stringify(entity);
+
+		$.ajax({
+			type : "POST",
+			url : _path + "/collect/modifyTags",
+			cache : false, // 禁用缓存
+			data : param, // 传入已封装的参数
+			contentType : 'application/json;charset=utf-8',
+			dataType : "json",
+			success : function(result) {
+				if (result.status == "S") {
+					toastr['success'](result.message);
+					_collectDt.draw();
+					// 关闭模态框
+					$('#tagModal').modal('hide');
+					// 清除tag选中样式，防止添加收藏时报错
+					$("#tagModal .tagBtnGroupDiv .tag-btn").removeClass('btn-primary');
+				} else {
+					toastr['error'](result.message);
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				toastr['error']('发生错误');
+			}
+		});
+
+	})
 	// ---------------------Tag BEGIN------------------------------------------------
 	showAllTags();
 	// 查询所有的Tag
@@ -226,15 +346,13 @@ $(document).ready(function() {
 			success : function(result) {
 				if (result.status == "S") {
 					// 清空所有tag button
-					$('#tagBtnGroupDiv').empty();
-					$('#addTagBtnGroupDiv').empty();
+					$('.tagBtnGroupDiv').empty();
 
 					// 遍历数组，添加标签button
 					$.each(result.data, function(index, item) {
-						var btnStr = '<div class="col-md-1"><button type="button" class="btn btn-primary btn-sm" style="width:100%;">' + item.name + '</button></div>';
-						var addBtnStr = '<div class="col-md-1"><button type="button" class="btn btn-default btn-sm tag-btn" style="width:100%;" data-tagId=' + item.id + '>' + item.name + '</button></div>';
-						$('#tagBtnGroupDiv').append($(btnStr));
-						$('#addTagBtnGroupDiv').append($(addBtnStr));
+						var addBtnStr = '<button type="button" class="btn btn-default btn-sm tag-btn" data-tagId=' + item.id + '>' + item.name + '</button>';
+						$('.tagBtnGroupDiv').append($(addBtnStr));
+						$('.tagBtnGroupDiv').html($('.tagBtnGroupDiv').html() + "&nbsp;&nbsp;");
 					});
 				} else {
 					toastr['error'](result.message);
@@ -281,7 +399,7 @@ $(document).ready(function() {
 	});
 
 	// 添加收藏时，点击标签按钮，增加事件
-	$("#addTagBtnGroupDiv").on("click", ".tag-btn", function() {
+	$(".tagBtnGroupDiv").on("click", ".tag-btn", function() {
 		// 获取选中的tagId
 		$(this).toggleClass('btn-primary');
 	});

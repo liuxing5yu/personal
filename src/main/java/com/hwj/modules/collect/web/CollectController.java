@@ -40,7 +40,7 @@ public class CollectController {
 		ModelAndView mv = new ModelAndView("/collect/collect");
 		return mv;
 	}
-	
+
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public ResponseEntity<ResultEntity> search(@RequestBody CollectParamModel param) {
 		ResultEntity result = null;
@@ -78,6 +78,34 @@ public class CollectController {
 		try {
 			service.changeStatus(id, status);
 			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, e.getMessage());
+		}
+		HttpHeaders headers = new HttpHeaders();
+		return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+	public ResponseEntity<ResultEntity> delete(@PathVariable String id) {
+		ResultEntity result = null;
+		try {
+			service.delete(id);
+			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "删除成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, e.getMessage());
+		}
+		HttpHeaders headers = new HttpHeaders();
+		return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/modifyTags", method = RequestMethod.POST)
+	public ResponseEntity<ResultEntity> modifyTags(@RequestBody CollectParamModel model) {
+		ResultEntity result = null;
+		try {
+			service.modifyTags(model);
+			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "操作成功");
 		} catch (Exception e) {
 			e.printStackTrace();
 			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, e.getMessage());

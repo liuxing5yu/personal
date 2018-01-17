@@ -3,6 +3,7 @@
  */
 package com.hwj.modules.collect.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
@@ -20,21 +21,19 @@ import com.hwj.modules.collect.model.CollectModel;
 @MyBatisRepository
 public interface CollectDao {
 
+	List<CollectModel> search(Map<String, Object> map);
+
 	PageList<CollectModel> search(Map<String, Object> map, PageBounds pageBounds);
 
-	/**
-	 * 
-	 *
-	 * @param map
-	 */
 	void add(Map<String, Object> map);
+
+	void changeStatus(Map<String, Object> map);
 
 	/**
 	 * 
 	 *
 	 * @param id
-	 * @param status
 	 */
-	void changeStatus(Map<String, Object> map);
+	void delete(String id);
 
 }

@@ -3,7 +3,6 @@
  */
 package com.hwj.modules.collect.service;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.hwj.modules.base.util.MapUtil;
 import com.hwj.modules.collect.dao.CollectCollectTagDao;
 import com.hwj.modules.collect.dao.CollectDao;
@@ -39,10 +38,24 @@ public class CollectService {
 	private CollectCollectTagDao collectCollectTagDao;
 
 	public PageList<CollectModel> search(CollectParamModel param) {
-		PageBounds pageBounds = new PageBounds(param.getPageNow() + 1, param.getPageSize());
 		Map<String, Object> map = new HashMap<>();
 		MapUtil.object2Map(map, param);
-		return dao.search(map, pageBounds);
+
+		List<CollectModel> list = dao.search(map);
+
+		// 生成PageList
+		int fromIndex = 0, toIndex = list.size();
+		int pageStart = param.getPageStart(), pageEnd = param.getPageStart() + param.getPageSize();
+		if (fromIndex < pageStart) {
+			fromIndex = pageStart;
+		}
+		if (toIndex > pageEnd) {
+			toIndex = pageEnd;
+		}
+		PageList<CollectModel> pageList = new PageList<>(list.subList(fromIndex, toIndex),
+				new Paginator(param.getPageNow(), param.getPageSize(), list.size()));
+
+		return pageList;
 	}
 
 	/**
@@ -59,7 +72,9 @@ public class CollectService {
 		map.put("id", collectId);
 		dao.add(map);
 
-		addTags(collectId, model.getTagIds());
+		if (!CollectionUtils.isEmpty(model.getTagIds())) {
+			addTags(collectId, model.getTagIds());
+		}
 	}
 
 	public void addTags(String collectId, List<String> tagIds) {
@@ -84,4 +99,29 @@ public class CollectService {
 
 	}
 
+	/**
+	 * 
+	 *
+	 * @param id
+	 */
+	public void delete(String id) {
+		dao.delete(id);
+	}
+
+	/**
+	 * 
+	 *
+	 * @param model
+	 */
+	@Transactional
+	public void modifyTags(CollectParamModel param) {
+		// 清除收藏的所有标签
+		collectCollectTagDao.delete(param.getId());
+
+		// 为收藏添加选中的标签
+		Map<String, Object> map = new HashMap<>();
+		map.put("collectId", param.getId());
+		map.put("collectTagIds", param.getTagIds());
+		collectCollectTagDao.add(map);
+	}
 }

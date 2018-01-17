@@ -19,4 +19,11 @@ public interface CollectCollectTagDao {
 
 	void add(Map<String, Object> map);
 
+	/**
+	 * 
+	 *
+	 * @param id
+	 */
+	void delete(String id);
+
 }

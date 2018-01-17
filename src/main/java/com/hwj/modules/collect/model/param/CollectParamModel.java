@@ -18,6 +18,7 @@ public class CollectParamModel extends PaginationParam {
 
 	private static final long serialVersionUID = -666964339182327040L;
 
+	private String id;
 	private String title;
 	private String url;
 	private List<String> tagIds;
@@ -44,6 +45,14 @@ public class CollectParamModel extends PaginationParam {
 
 	public void setTagIds(List<String> tagIds) {
 		this.tagIds = tagIds;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }
