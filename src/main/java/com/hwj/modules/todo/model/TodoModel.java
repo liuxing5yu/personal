@@ -11,6 +11,7 @@ public class TodoModel {
 	private String id;
 	private String content;
 	private String status;
+	private String app;
 
 	public String getId() {
 		return id;
@@ -34,6 +35,14 @@ public class TodoModel {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getApp() {
+		return app;
+	}
+
+	public void setApp(String app) {
+		this.app = app;
 	}
 
 }

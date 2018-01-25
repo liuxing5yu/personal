@@ -5,16 +5,20 @@
 		<result property="id" column="ID" jdbcType="VARCHAR" />
 		<result property="content" column="CONTENT" jdbcType="VARCHAR" />
 		<result property="status" column="STATUS" jdbcType="VARCHAR" />
+		<result property="todo" column="TODO" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<select id="search" parameterType="map" resultMap="TodoModelMap">
 		select
-		t.id,t.content,t.status
+		t.id,t.content,t.status,t.app
 		from
 		todo t
 		where 1=1
-		<if test="app != null and app != ''">
+		<if test="app != null and app != '' and app != '-1'">
 			and t.app = #{app}
+		</if>
+		<if test="status != null and status != '' and status != '-1'">
+			and t.status = #{status}
 		</if>
 		order by status,last_modify_time desc
 	</select>
@@ -22,9 +26,9 @@
 	<insert id="add" parameterType="map">
 		insert into
 		todo
-		(content,create_time,last_modify_time,app)
+		(content,create_time,last_modify_time,app,status)
 		values
-		(#{content},sysdate,sysdate,#{app})
+		(#{content},sysdate,sysdate,#{app},'0')
 	</insert>
 
 	<update id="changeStatus" parameterType="map">

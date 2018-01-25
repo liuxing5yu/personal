@@ -6,6 +6,7 @@
 		<result property="title" column="COLLECT_TITLE" jdbcType="VARCHAR" />
 		<result property="url" column="COLLECT_URL" jdbcType="VARCHAR" />
 		<result property="status" column="STATUS" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="DATE" />
 
 		<collection property="tags" ofType="com.hwj.modules.collect.model.CollectTagModel">
 			<result property="id" column="TAG_ID" jdbcType="VARCHAR" />
@@ -17,7 +18,7 @@
 
 	<select id="search" parameterType="map" resultMap="CollectModelMap">
 		select
-		t.id,t.collect_title,t.collect_url,t.status,t.last_modify_time,
+		t.id,t.collect_title,t.collect_url,t.status,t.last_modify_time,t.create_time,
 		ct.id tag_id,
 		ct.last_modify_time
 		tag_last_modify_time,
@@ -33,14 +34,15 @@
 		where 1=1
 		order
 		by
-		t.status,t.last_modify_time desc,
+		t.create_time
+		desc,t.status,
 		upper(ct.name)
 	</select>
 
 	<insert id="add" parameterType="map">
 		insert into collect
-		t(t.id,t.collect_title,t.collect_url,t.status,t.last_modify_time)
-		values(#{id},#{title},#{url},'0',sysdate)
+		t(t.id,t.collect_title,t.collect_url,t.status,t.last_modify_time,t.create_time)
+		values(#{id},#{title},#{url},'0',sysdate,sysdate)
 	</insert>
 
 	<update id="edit">

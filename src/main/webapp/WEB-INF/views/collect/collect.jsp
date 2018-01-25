@@ -39,7 +39,7 @@ table.dataTable tbody tr.selected input {
 						<div class="clearfix" style="margin-bottom: 10px;"></div>
 
 						<div class="row">
-							<div class="col-md-11 tagBtnGroupDiv"></div>
+							<div id="tagShowDiv" class="col-md-11 tagBtnGroupDiv"></div>
 						</div>
 
 					</div>
@@ -94,6 +94,7 @@ table.dataTable tbody tr.selected input {
 										<tr>
 											<th>序号</th>
 											<th>标题</th>
+											<th>创建时间</th>
 											<th>标签</th>
 											<th>状态</th>
 											<th>操作</th>
@@ -161,7 +162,7 @@ table.dataTable tbody tr.selected input {
 				<div class="modal-body">
 					<div class="row">
 						<input type="hidden" id="collectId" name="collectId" />
-						<div class="col-md-11 tagBtnGroupDiv"></div>
+						<div id="addTagModalDiv" class="col-md-11 tagBtnGroupDiv"></div>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -169,10 +170,7 @@ table.dataTable tbody tr.selected input {
 					<button id="saveTagBtn" type="button" class="btn btn-primary">Save</button>
 				</div>
 			</div>
-			<!-- /.modal-content -->
 		</div>
-		<!-- /.modal-dialog -->
 	</div>
-	<!-- /.modal -->
 </body>
 </html>

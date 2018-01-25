@@ -40,7 +40,7 @@
 		<!-- 扫描sql配置文件：映射需要的xml文件 -->
 		<property name="mapperLocations" value="classpath:sqlmap/**/*.xml" />
 	</bean>
-
+	
 	<!-- 扫描basePackage下所有以@MyBatisRepository标识的 接口 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />

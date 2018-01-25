@@ -58,4 +58,13 @@ public class CollectTagService {
 		dao.changeStatus(map);
 	}
 
+	/**
+	 * 
+	 *
+	 * @param id
+	 */
+	public void delete(String id) {
+		dao.delete(id);
+	}
+
 }

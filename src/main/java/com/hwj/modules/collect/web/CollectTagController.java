@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -55,6 +56,20 @@ public class CollectTagController {
 		try {
 			service.add(model);
 			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "添加成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, e.getMessage());
+		}
+		HttpHeaders headers = new HttpHeaders();
+		return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+	public ResponseEntity<ResultEntity> delete(@PathVariable String id) {
+		ResultEntity result = null;
+		try {
+			service.delete(id);
+			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "删除成功");
 		} catch (Exception e) {
 			e.printStackTrace();
 			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, e.getMessage());

@@ -36,4 +36,11 @@ public interface CollectTagDao {
 	 */
 	void changeStatus(Map<String, Object> map);
 
+	/**
+	 * 
+	 *
+	 * @param id
+	 */
+	void delete(String id);
+
 }

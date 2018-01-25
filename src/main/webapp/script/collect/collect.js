@@ -64,7 +64,7 @@ $(document).ready(function() {
 		},
 		columns : [ {
 			title : "序号",
-			width : '5%',
+			width : '7%',
 			data : null,
 		}, {
 			title : "标题",
@@ -74,8 +74,15 @@ $(document).ready(function() {
 				return "<a target='_blank' href='" + row.url + "'>" + data + "</a>";
 			}
 		}, {
+			title : "创建时间",
+			width : '15%',
+			data : 'createTime',
+			render : function(data, type, row, meta) {
+				return new Date(data).toLocaleString();
+			}
+		}, {
 			title : "标签",
-			width : '30%',
+			width : '15%',
 			data : 'tags',
 			render : function(data, type, row, meta) {
 				var htmlStr = '';
@@ -97,7 +104,7 @@ $(document).ready(function() {
 			}
 		}, {
 			title : "操作",
-			width : '20%',
+			width : '15%',
 			data : null,
 			defaultContent : "<button class='tag-btn btn btn-primary' type='button' data-target='#tagModal'>标签</button><button class='delete-btn btn btn-danger' type='button'>删除</button>"
 		} ],
@@ -170,43 +177,24 @@ $(document).ready(function() {
 		var id = data.id;
 		var status = data.status == '1' ? '0' : '1';
 
-		$.confirm({
-			title : 'Confirm!',
-			content : '确定？',
-			buttons : {
-				confirm : {
-					text : '确定',
-					btnClass : 'btn-danger',
-					action : function() {
+		$.ajax({
+			type : "POST",
+			url : _path + "/collect/changeStatus/" + id + "/" + status,
+			cache : false, // 禁用缓存
+			//data : param, // 传入已封装的参数
+			contentType : 'application/json;charset=utf-8',
+			dataType : "json",
+			success : function(result) {
+				if (result.status == "S") {
+					_collectDt.draw();
+					toastr['success'](result.message);
 
-						$.ajax({
-							type : "POST",
-							url : _path + "/collect/changeStatus/" + id + "/" + status,
-							cache : false, // 禁用缓存
-							//data : param, // 传入已封装的参数
-							contentType : 'application/json;charset=utf-8',
-							dataType : "json",
-							success : function(result) {
-								if (result.status == "S") {
-									_collectDt.draw();
-									toastr['success'](result.message);
-
-								} else {
-									toastr['error'](result.message);
-								}
-							},
-							error : function(XMLHttpRequest, textStatus, errorThrown) {
-								toastr['error']('发生错误');
-							}
-						});
-					}
-				},
-				cancel : {
-					text : '取消',
-					btnClass : 'btn-default',
-					action : function() {
-					}
+				} else {
+					toastr['error'](result.message);
 				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				toastr['error']('发生错误');
 			}
 		});
 
@@ -339,6 +327,7 @@ $(document).ready(function() {
 		$.ajax({
 			type : "POST",
 			url : _path + "/collectTag/search",
+			async : false, //是否异步
 			cache : false, // 禁用缓存
 			data : param, // 传入已封装的参数
 			contentType : 'application/json;charset=utf-8',
@@ -366,8 +355,17 @@ $(document).ready(function() {
 
 	// 添加Tag
 	$('#addTagBtn').on('click', function() {
+		var tagName = $('#tagInput').val();
+
+		// 校验标签名称是否为空
+		if (!tagName) {
+			toastr['warning']('标签名称不能为空');
+			return;
+		}
+		// TODO 校验标签名称是否已存在，或相似已存在
+
 		var entity = {};
-		entity.name = $('#tagInput').val();
+		entity.name = tagName;
 		entity.app = app;
 
 		var param = JSON.stringify(entity);
@@ -384,6 +382,13 @@ $(document).ready(function() {
 					toastr['success'](result.message);
 					// 添加进tag组中
 					showAllTags();
+
+					// 选中添加的按钮
+					$('#tagShowDiv button').each(function(index, domEle) {
+						if (tagName == $(domEle).text()) {
+							$(domEle).addClass('btn-primary');
+						}
+					})
 
 					// 清空输入内容
 					$('#tagInput').val('');
@@ -402,6 +407,52 @@ $(document).ready(function() {
 	$(".tagBtnGroupDiv").on("click", ".tag-btn", function() {
 		// 获取选中的tagId
 		$(this).toggleClass('btn-primary');
+	});
+
+	// 双击显示tag区域的button时，提示删除
+	$('#tagShowDiv').on("dblclick", ".tag-btn", function() {
+		var id = $(this).attr('data-tagId');
+		$.confirm({
+			title : 'Confirm!',
+			content : '确定删除此标签？',
+			buttons : {
+				confirm : {
+					text : '确定',
+					btnClass : 'btn-danger',
+					action : function() {
+
+						$.ajax({
+							type : "POST",
+							url : _path + "/collectTag/delete/" + id,
+							cache : false, // 禁用缓存
+							//data : param, // 传入已封装的参数
+							contentType : 'application/json;charset=utf-8',
+							dataType : "json",
+							success : function(result) {
+								if (result.status == "S") {
+									showAllTags();
+									toastr['success'](result.message);
+
+									// 清空表单内容
+									$('#collectInput').val('');
+								} else {
+									toastr['error'](result.message);
+								}
+							},
+							error : function(XMLHttpRequest, textStatus, errorThrown) {
+								toastr['error']('发生错误');
+							}
+						});
+					}
+				},
+				cancel : {
+					text : '取消',
+					btnClass : 'btn-default',
+					action : function() {
+					}
+				}
+			}
+		});
 	});
 	// ---------------------Tag END------------------------------------------------	
 

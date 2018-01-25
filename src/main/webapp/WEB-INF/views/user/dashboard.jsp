@@ -18,6 +18,12 @@ body {
 		<div class="row" style="height: 20%;">
 			<div class="col-md-3">
 				<div class="panel panel-default">
+					<div class="panel-heading">最近在做的事情</div>
+					<div class="panel-body" style="height: 100%;">整理收藏</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="panel panel-default">
 					<div class="panel-heading">最近的学习目标</div>
 					<div class="panel-body" style="height: 100%;">英语7000单词</div>
 				</div>

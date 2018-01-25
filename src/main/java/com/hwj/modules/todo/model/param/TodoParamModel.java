@@ -19,6 +19,8 @@ public class TodoParamModel extends PaginationParam {
 	private String content;
 
 	private String app;
+	
+	private String status;
 
 	public String getContent() {
 		return content;
@@ -34,5 +36,13 @@ public class TodoParamModel extends PaginationParam {
 
 	public void setApp(String app) {
 		this.app = app;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

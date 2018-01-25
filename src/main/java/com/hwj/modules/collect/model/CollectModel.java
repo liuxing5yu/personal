@@ -1,5 +1,6 @@
 package com.hwj.modules.collect.model;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -14,6 +15,7 @@ public class CollectModel {
 	private String title;
 	private String url;
 	private String status;
+	private Timestamp createTime;
 	private List<CollectTagModel> tags;
 
 	public String getId() {
@@ -54,6 +56,14 @@ public class CollectModel {
 
 	public void setTags(List<CollectTagModel> tags) {
 		this.tags = tags;
+	}
+
+	public Timestamp getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Timestamp createTime) {
+		this.createTime = createTime;
 	}
 
 }

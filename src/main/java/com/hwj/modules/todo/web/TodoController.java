@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.hwj.modules.base.entity.ResultEntity;
@@ -33,6 +34,12 @@ public class TodoController {
 
 	@Autowired
 	private TodoService service;
+
+	@RequestMapping("/view")
+	public ModelAndView view() {
+		ModelAndView mv = new ModelAndView("/todo/todo");
+		return mv;
+	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public ResponseEntity<ResultEntity> search(@RequestBody TodoParamModel param) {

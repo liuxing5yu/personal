@@ -22,15 +22,6 @@
 		values(#{name})
 	</insert>
 
-	<update id="edit">
-	</update>
-
-	<delete id="delete" parameterType="string">
-		delete from keys
-		where 1=1
-		and id = #{id}
-	</delete>
-
 	<update id="changeStatus" parameterType="map">
 		update collect
 		set
@@ -39,4 +30,11 @@
 		where
 		id = #{id}
 	</update>
+
+	<delete id="delete" parameterType="string">
+		delete from collect_tag
+		where 1=1
+		and
+		id = #{id}
+	</delete>
 </mapper>
