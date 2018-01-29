@@ -1,3 +1,16 @@
+----------------------------------------------2018年1月26日------------------------------------------------------------------------
+
+-- 获取自定义的表信息
+select * from user_tables t;
+select * from codelist t;
+select * from keys;
+select * from todo;
+select * from user_menu;
+select * from collect;
+select * from collect_tag;
+select * from collect_collect_tag;
+select * from recent_do;
+
 ----------------------------------------------2018年1月19日------------------------------------------------------------------------
 select * from user_menu;
 
