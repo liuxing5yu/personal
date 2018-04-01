@@ -14,7 +14,7 @@
 		<if test="isValid != null and isValid != ''">
 			and t.isvalid = #{isValid}
 		</if>
-		order by upper(t.name)
+		order by upper(nlssort(t.name,'NLS_SORT=SCHINESE_PINYIN_M'))
 	</select>
 
 	<insert id="add" parameterType="map">

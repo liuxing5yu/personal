@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +46,10 @@ public class CollectController {
 	public ResponseEntity<ResultEntity> search(@RequestBody CollectParamModel param) {
 		ResultEntity result = null;
 		try {
+			String searchText = param.getSearchText();
+			if (!StringUtils.isEmpty(searchText)) {
+				param.setSearchText("%" + searchText + "%");
+			}
 			PageList<CollectModel> list = service.search(param);
 			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "成功");
 			result.addObject("data", list);

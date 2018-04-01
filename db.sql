@@ -1,3 +1,37 @@
+----------------------------------------------2018年4月1日------------------------------------------------------------------------
+-- 汉字按拼音排序
+select *
+  from collect_tag t
+ where 1 = 1
+ order by upper(NLSSORT(t.name,'NLS_SORT=SCHINESE_PINYIN_M'));
+
+
+-- 查找所有收藏
+select
+    t.id,t.collect_title,t.collect_url,t.status,t.last_modify_time,t.create_time,t.is_series,
+    ct.id tag_id,
+    ct.last_modify_time
+    tag_last_modify_time,
+    ct.name tag_name,
+    ct.isvalid tag_isvalid
+    from
+    collect t left join collect_collect_tag cct
+    on (t.id =
+    cct.collect_id)
+    left join collect_tag ct on
+    (cct.collect_tag_id =
+    ct.id)
+    where 1=1
+    and
+    (
+    t.collect_title like '%小%' or t.collect_url like '%小%' or ct.name like '%小%'
+    )
+    order
+    by
+    t.create_time desc,t.status,
+    upper(nlssort(ct.name,'NLS_SORT=SCHINESE_PINYIN_M'))
+    ;
+
 ----------------------------------------------2018年1月26日------------------------------------------------------------------------
 
 -- 获取自定义的表信息

@@ -21,7 +21,10 @@ public class CollectParamModel extends PaginationParam {
 	private String id;
 	private String title;
 	private String url;
+	private String series;
 	private List<String> tagIds;
+
+	private String searchText;
 
 	public String getTitle() {
 		return title;
@@ -53,6 +56,22 @@ public class CollectParamModel extends PaginationParam {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getSeries() {
+		return series;
+	}
+
+	public void setSeries(String series) {
+		this.series = series;
+	}
+
+	public String getSearchText() {
+		return searchText;
+	}
+
+	public void setSearchText(String searchText) {
+		this.searchText = searchText;
 	}
 
 }

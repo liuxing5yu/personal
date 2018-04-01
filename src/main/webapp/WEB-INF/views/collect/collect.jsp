@@ -53,14 +53,23 @@ table.dataTable tbody tr.selected input {
 					<div class="form-group">
 						<label class="col-sm-1 control-label">标题</label>
 						<div class="col-sm-11">
-							<input type="text" class="form-control" id="title" placeholder="标题">
+							<input type="text" class="form-control" id="title" name="title" placeholder="标题">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-sm-1 control-label">URL</label>
 						<div class="col-sm-11">
-							<input type="text" class="form-control" id="url" placeholder="URL" onclick="this.select()" value="http://">
+							<input type="text" class="form-control" id="url" name="url" placeholder="URL" onclick="this.select()" value="http://">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-sm-offset-1 col-sm-11">
+							<div class="checkbox">
+								<label> <input type="checkbox" id="series" name="series"> 系列文章
+								</label>
+							</div>
 						</div>
 					</div>
 
@@ -74,14 +83,19 @@ table.dataTable tbody tr.selected input {
 		</div>
 
 		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h2 class="panel-title">收藏</h2>
+			</div>
 			<div class="panel-body">
 				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">操作</h3>
-					</div>
 					<div class="panel-body">
 						<div class="row">
-							<div class="col-md-1"></div>
+							<div class="col-md-11">
+								<input type="text" class="form-control" id="searchCollectInput" name="searchCollectInput" />
+							</div>
+							<div class="col-md-1">
+								<button type="button" id="searchCollectBtn" class="btn btn-success">搜索</button>
+							</div>
 						</div>
 
 						<!-- 清除浮动 -->
@@ -113,7 +127,6 @@ table.dataTable tbody tr.selected input {
 				<h2>ToDo List</h2>
 			</div>
 			<div class="panel-body">
-
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h3 class="panel-title">操作</h3>

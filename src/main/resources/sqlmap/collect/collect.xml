@@ -7,6 +7,7 @@
 		<result property="url" column="COLLECT_URL" jdbcType="VARCHAR" />
 		<result property="status" column="STATUS" jdbcType="VARCHAR" />
 		<result property="createTime" column="CREATE_TIME" jdbcType="DATE" />
+		<result property="series" column="IS_SERIES" jdbcType="VARCHAR" />
 
 		<collection property="tags" ofType="com.hwj.modules.collect.model.CollectTagModel">
 			<result property="id" column="TAG_ID" jdbcType="VARCHAR" />
@@ -18,7 +19,7 @@
 
 	<select id="search" parameterType="map" resultMap="CollectModelMap">
 		select
-		t.id,t.collect_title,t.collect_url,t.status,t.last_modify_time,t.create_time,
+		t.id,t.collect_title,t.collect_url,t.status,t.last_modify_time,t.create_time,t.is_series,
 		ct.id tag_id,
 		ct.last_modify_time
 		tag_last_modify_time,
@@ -32,17 +33,20 @@
 		(cct.collect_tag_id =
 		ct.id)
 		where 1=1
+		<if test="searchText != null and searchText != ''">
+			and (t.collect_title like #{searchText} or t.collect_url like #{searchText} or ct.name like #{searchText})
+		</if>
 		order
 		by
 		t.create_time
 		desc,t.status,
-		upper(ct.name)
+		upper(nlssort(ct.name,'NLS_SORT=SCHINESE_PINYIN_M'))
 	</select>
 
 	<insert id="add" parameterType="map">
 		insert into collect
-		t(t.id,t.collect_title,t.collect_url,t.status,t.last_modify_time,t.create_time)
-		values(#{id},#{title},#{url},'0',sysdate,sysdate)
+		t(t.id,t.collect_title,t.collect_url,t.status,t.last_modify_time,t.create_time,t.is_series)
+		values(#{id},#{title},#{url},'0',sysdate,sysdate,#{series})
 	</insert>
 
 	<update id="edit">

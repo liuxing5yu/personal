@@ -9,6 +9,7 @@ $(document).ready(function() {
 			var param = {};
 
 			// 页面参数
+			param.searchText = $('#searchCollectInput').val();
 
 			// 组装分页参数
 			param.pageNow = data.start / data.length + 1;
@@ -71,7 +72,11 @@ $(document).ready(function() {
 			width : '40%',
 			data : 'title',
 			render : function(data, type, row, meta) {
-				return "<a target='_blank' href='" + row.url + "'>" + data + "</a>";
+				if (row.series == '1') {
+					return "<a target='_blank' href='" + row.url + "'>" + data + '<span class="badge">系</span>' + "</a>";
+				} else {
+					return "<a target='_blank' href='" + row.url + "'>" + data + "</a>";
+				}
 			}
 		}, {
 			title : "创建时间",
@@ -120,6 +125,11 @@ $(document).ready(function() {
 
 	})).api();
 
+	// 搜索收藏
+	$('#searchCollectBtn').on('click', function() {
+		_collectDt.draw();
+	});
+
 	// 添加
 	$('#saveRow').on('click', function() {
 		var title = $('#title').val();
@@ -132,6 +142,7 @@ $(document).ready(function() {
 		var entity = {};
 		entity.title = title;
 		entity.url = url;
+		entity.series = $('#series').prop('checked') ? '1' : '0';
 
 		var tagIds = [];
 		// 获取所有选中的tag
@@ -181,7 +192,7 @@ $(document).ready(function() {
 			type : "POST",
 			url : _path + "/collect/changeStatus/" + id + "/" + status,
 			cache : false, // 禁用缓存
-			//data : param, // 传入已封装的参数
+			// data : param, // 传入已封装的参数
 			contentType : 'application/json;charset=utf-8',
 			dataType : "json",
 			success : function(result) {
@@ -217,7 +228,7 @@ $(document).ready(function() {
 							type : "POST",
 							url : _path + "/collect/delete/" + id,
 							cache : false, // 禁用缓存
-							//data : param, // 传入已封装的参数
+							// data : param, // 传入已封装的参数
 							contentType : 'application/json;charset=utf-8',
 							dataType : "json",
 							success : function(result) {
@@ -327,7 +338,7 @@ $(document).ready(function() {
 		$.ajax({
 			type : "POST",
 			url : _path + "/collectTag/search",
-			async : false, //是否异步
+			async : false, // 是否异步
 			cache : false, // 禁用缓存
 			data : param, // 传入已封装的参数
 			contentType : 'application/json;charset=utf-8',
@@ -425,7 +436,7 @@ $(document).ready(function() {
 							type : "POST",
 							url : _path + "/collectTag/delete/" + id,
 							cache : false, // 禁用缓存
-							//data : param, // 传入已封装的参数
+							// data : param, // 传入已封装的参数
 							contentType : 'application/json;charset=utf-8',
 							dataType : "json",
 							success : function(result) {
@@ -454,7 +465,7 @@ $(document).ready(function() {
 			}
 		});
 	});
-	// ---------------------Tag END------------------------------------------------	
+	// ---------------------Tag END------------------------------------------------
 
 	// ---------------------Todo BEGIN------------------------------------------------
 	var todoManage = {
@@ -599,7 +610,7 @@ $(document).ready(function() {
 							type : "POST",
 							url : _path + "/todo/changeStatus/" + id + "/" + status,
 							cache : false, // 禁用缓存
-							//data : param, // 传入已封装的参数
+							// data : param, // 传入已封装的参数
 							contentType : 'application/json;charset=utf-8',
 							dataType : "json",
 							success : function(result) {

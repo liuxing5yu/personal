@@ -16,6 +16,7 @@ public class CollectModel {
 	private String url;
 	private String status;
 	private Timestamp createTime;
+	private String series;
 	private List<CollectTagModel> tags;
 
 	public String getId() {
@@ -64,6 +65,14 @@ public class CollectModel {
 
 	public void setCreateTime(Timestamp createTime) {
 		this.createTime = createTime;
+	}
+
+	public String getSeries() {
+		return series;
+	}
+
+	public void setSeries(String series) {
+		this.series = series;
 	}
 
 }
