@@ -27,4 +27,7 @@
 
 	<!-- 扫描 controller 包 -->
 	<context:component-scan base-package="com.hwj.**.web" />
+	
+	<!-- 控制器通知 -->
+	<bean class="com.hwj.modules.base.exception.BaseExceptionHandler"></bean>
 </beans>

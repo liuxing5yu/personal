@@ -1,4 +1,8 @@
 /**
+ * 这里定制一些引用插件的初始化参数
+ */
+
+/**
  * Datatables初始化配置
  */
 var DATATABLES_DEFAULT_OPTIONS = {

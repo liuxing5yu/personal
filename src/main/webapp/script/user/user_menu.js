@@ -63,8 +63,7 @@ $(function() {
 						},
 						actions : [ {
 							name : "新增",
-							iconClass : 'glyphicon glyphicon-plus',
-							classNames : 'btn-default',
+							iconClass : 'fa fa-plus',
 							onClick : function(row) {
 								$("#name").val("");
 								$("#url").val("");
@@ -76,7 +75,7 @@ $(function() {
 							}
 						}, {
 							name : '删除',
-							iconClass : 'glyphicon glyphicon-trash',
+							iconClass : 'fa fa-trash',
 							onClick : function(row) {
 								if (!row)
 									return;

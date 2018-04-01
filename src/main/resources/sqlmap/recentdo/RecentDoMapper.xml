@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwj.modules.recentdo.dao.RecentDoMapper">
+	<resultMap id="BaseResultMap" type="com.hwj.modules.recentdo.model.RecentDo">
+		<id column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="CONTENT" jdbcType="VARCHAR" property="content" />
+		<result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+		<result column="LAST_MODIFY_TIME" jdbcType="DATE" property="lastModifyTime" />
+		<result column="TITLE" jdbcType="VARCHAR" property="title" />
+		<result column="DEL_FLAG" jdbcType="CHAR" property="delFlag" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, CONTENT, CREATE_TIME, LAST_MODIFY_TIME, TITLE, DEL_FLAG
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from RECENT_DO
+		where ID = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from RECENT_DO
+		where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.hwj.modules.recentdo.model.RecentDo">
+		insert into RECENT_DO (ID, CONTENT, CREATE_TIME,
+		LAST_MODIFY_TIME, TITLE, DEL_FLAG
+		)
+		values (#{id,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
+		#{createTime,jdbcType=DATE},
+		#{lastModifyTime,jdbcType=DATE}, #{title,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.hwj.modules.recentdo.model.RecentDo">
+		insert into RECENT_DO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="content != null">
+				CONTENT,
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME,
+			</if>
+			<if test="lastModifyTime != null">
+				LAST_MODIFY_TIME,
+			</if>
+			<if test="title != null">
+				TITLE,
+			</if>
+			<if test="delFlag != null">
+				DEL_FLAG,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=DATE},
+			</if>
+			<if test="lastModifyTime != null">
+				#{lastModifyTime,jdbcType=DATE},
+			</if>
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag,jdbcType=CHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.hwj.modules.recentdo.model.RecentDo">
+		update RECENT_DO
+		<set>
+			<if test="content != null">
+				CONTENT = #{content,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=DATE},
+			</if>
+			<if test="lastModifyTime != null">
+				LAST_MODIFY_TIME = #{lastModifyTime,jdbcType=DATE},
+			</if>
+			<if test="title != null">
+				TITLE = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="delFlag != null">
+				DEL_FLAG = #{delFlag,jdbcType=CHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.hwj.modules.recentdo.model.RecentDo">
+		update RECENT_DO
+		set CONTENT = #{content,jdbcType=VARCHAR},
+		CREATE_TIME = #{createTime,jdbcType=DATE},
+		LAST_MODIFY_TIME =
+		#{lastModifyTime,jdbcType=DATE},
+		TITLE = #{title,jdbcType=VARCHAR},
+		DEL_FLAG = #{delFlag,jdbcType=CHAR}
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from RECENT_DO
+	</select>
+</mapper>

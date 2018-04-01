@@ -30,6 +30,17 @@ $(document).ready(function() {
 			}
 		});
 	}
+	
+//	var params = {};
+//	params.codekind = 'KEY_SCENE';
+//	params.successCallback = function(data){
+//		var $sceneDiv = $('#sceneDiv');
+//		$.each(data, function(index, item) {
+//			var divStr = '<div class="col-md-1"><button type="button" class="sceneBtn btn btn-default" data-scene="' + item.codevalue + '">' + item.codename + '</button></div>';
+//			$sceneDiv.append($(divStr));
+//		});
+//	}
+//	getCodeList
 
 	var manage = {
 		getQueryCondition : function(data) {
