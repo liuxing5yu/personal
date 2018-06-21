@@ -1,3 +1,30 @@
+----------------------------------------------2018年5月24日------------------------------------------------------------------------
+select t.*,t.rowid from codelist t;
+----------------------------------------------2018年4月25日------------------------------------------------------------------------
+select t.id,
+       t.collect_title,
+       t.collect_url,
+       t.status,
+       t.last_modify_time,
+       t.create_time,
+       t.is_series,
+       ct.id               tag_id,
+       ct.last_modify_time tag_last_modify_time,
+       ct.name             tag_name,
+       ct.isvalid          tag_isvalid
+  from collect t
+  left join collect_collect_tag cct
+    on (t.id = cct.collect_id)
+  left join collect_tag ct
+    on (cct.collect_tag_id = ct.id)
+ where 1 = 1
+   and (upper(t.collect_title) like upper('%java%') or
+       upper(t.collect_url) like upper('%java%') or upper(ct.name) like upper('%java%'))
+ order by 
+       
+          t.status,
+          t.create_time desc,
+          upper(nlssort(ct.name, 'NLS_SORT=SCHINESE_PINYIN_M'));
 ----------------------------------------------2018年4月1日------------------------------------------------------------------------
 -- 汉字按拼音排序
 select *
@@ -70,7 +97,7 @@ select
 		where 1=1
 		order by t.status,t.last_modify_time desc;
     
-delete from collect t where t.id = '3952aa4f-4639-4656-a7c6-d65475942eb7';
+-- delete from collect t where t.id = '3952aa4f-4639-4656-a7c6-d65475942eb7';
 
 
 -- 查询收藏和收藏标签关联表

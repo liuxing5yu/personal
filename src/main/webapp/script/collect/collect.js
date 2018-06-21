@@ -125,6 +125,13 @@ $(document).ready(function() {
 
 	})).api();
 
+	// 搜索框回车事件
+	$('#searchCollectInput').on('keypress', function(event) {
+		if (event.keyCode == 13) {
+			_collectDt.draw();
+		}
+	});
+
 	// 搜索收藏
 	$('#searchCollectBtn').on('click', function() {
 		_collectDt.draw();
@@ -169,6 +176,7 @@ $(document).ready(function() {
 					$('#title').focus();
 					$('#title').val('');
 					$('#url').val('http://');
+					$("#series").removeAttr("checked");
 					$(".tagBtnGroupDiv .tag-btn").removeClass('btn-primary');
 
 				} else {

@@ -24,7 +24,9 @@ table.dataTable tbody tr.selected input {
 		<div class="panel panel-default">
 			<div class="panel-heading">所在场景</div>
 			<div class="panel-body">
-				<div class="row" id="sceneDiv"></div>
+				<div class="row">
+					<div class="col-md-12" id="sceneDiv"></div>
+				</div>
 			</div>
 		</div>
 

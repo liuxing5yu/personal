@@ -34,12 +34,13 @@
 		ct.id)
 		where 1=1
 		<if test="searchText != null and searchText != ''">
-			and (t.collect_title like #{searchText} or t.collect_url like #{searchText} or ct.name like #{searchText})
+			and (upper(t.collect_title) like upper(#{searchText}) or upper(t.collect_url) like upper(#{searchText}) or upper(ct.name) like upper(#{searchText}))
 		</if>
 		order
 		by
+		t.status,
 		t.create_time
-		desc,t.status,
+		desc,
 		upper(nlssort(ct.name,'NLS_SORT=SCHINESE_PINYIN_M'))
 	</select>
 

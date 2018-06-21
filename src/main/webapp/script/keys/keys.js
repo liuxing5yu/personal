@@ -18,7 +18,7 @@ $(document).ready(function() {
 				if (result.status == "S") {
 					var $sceneDiv = $('#sceneDiv');
 					$.each(result.data, function(index, item) {
-						var divStr = '<div class="col-md-1"><button type="button" class="sceneBtn btn btn-default" data-scene="' + item.codevalue + '">' + item.codename + '</button></div>';
+						var divStr = '<button type="button" class="sceneBtn btn btn-default" data-scene="' + item.codevalue + '">' + item.codename + '</button>';
 						$sceneDiv.append($(divStr));
 					});
 				} else {
